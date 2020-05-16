@@ -1,5 +1,7 @@
-"""
-Python file containing the basic utility functions for creating and manipulating Voronoi diagrams.
+""" Python file containing utilities for basic Voronoi operations.
+
+Some other documentation here, explaining more about this module.
+
 """
 
 __author__ = "Jun Hao (Simon) Hu"
@@ -14,7 +16,6 @@ import sys
 import warnings
 
 warnings.simplefilter("module", PendingDeprecationWarning)
-warnings.formatwarning = warning_on_one_line
 
 import shapely
 import numpy as np
@@ -25,6 +26,9 @@ from shapely.ops import triangulate
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
     return "%s:%s: %s:%s\n" % (filename, lineno, category.__name__, message)
+
+
+warnings.formatwarning = warning_on_one_line
 
 
 def generate_random_points(poly, num_points, min_dist=1):
@@ -52,14 +56,16 @@ def generate_random_points(poly, num_points, min_dist=1):
 
     Examples
     --------
-    # Generates 3 points with minimum separation distance of 1 unit.
-    >> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
-    >> random_points = helpers.generate_random_points(polygon, num_points=3, min_dist=1)
-    [[-75.10421685576651, 4.123350611217873], [34.510299741753755, 5.890079171808779], [-74.30335320228306, -0.10772421319072123]]
+    >>> # Generates 3 points with minimum separation distance of 1 unit.
+    >>> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
+    >>> random_points = pyvoro.generate_random_points(polygon, num_points=3, min_dist=1)
+    [[-75.10421685576651, 4.123350611217873],
+     [34.510299741753755, 5.890079171808779], 
+     [-74.30335320228306, -0.10772421319072123]]
 
-    # FAIL CASE. User asks for unreasonable separation distance, result is an infinite runtime.
-    >> polygon = Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
-    >> random_points = helpers.generate_random_points(polygon, num_points=100, min_dist=100)
+    >>> # FAIL CASE. User asks for unreasonable separation distance, result is an infinite runtime.
+    >>> polygon = Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
+    >>> random_points = pyvoro.generate_random_points(polygon, num_points=100, min_dist=100)
     """
 
     min_x, min_y, max_x, max_y = poly.bounds
@@ -125,10 +131,12 @@ def generate_points_within_polygon(poly, num_points):
 
     Examples
     --------
-    # Generates 3 points contained within a polygon.
-    >> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
-    >> random_points = helpers.generate_points_within_polygon(polygon, num_points=100)
-    [[-53.10904500583265, -7.531685953052616], [13.908619808266579, 58.8310992632654], [49.05513248457106, 10.135106966482866]]
+    >>> # Generates 3 points contained within a polygon.
+    >>> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
+    >>> random_points = pyvoro.generate_points_within_polygon(polygon, num_points=100)
+    [[-53.10904500583265, -7.531685953052616],
+     [13.908619808266579, 58.8310992632654],
+     [49.05513248457106, 10.135106966482866]]
 
     """
 
@@ -152,8 +160,8 @@ def generate_points_within_polygon(poly, num_points):
 def create_finite_voronoi_2d(vor, radius=None):
     """ Given an infinite Voronoi partition, creates a finite Voronoi partition in 2D by extending the infinite ridges and taking intersections of sets.
     
-    Returns
-    -------
+    Parameters
+    ----------
     vor : Scipy Voronoi object
         Object containing information about the infinite Voronoi partition.
     radius : float, optional
@@ -176,14 +184,14 @@ def create_finite_voronoi_2d(vor, radius=None):
 
     Examples
     --------
-    # Generate a finite 2D Voronoi object.
-    >> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
-    >> points = [[0, 0], [20, 30], [-50, 30], [-10, -10]]
-    >> vor = scipy.spatial.Voronoi(points)
-    >> regions, vorinfo = helpers.create_finite_voronoi_2d(vor, radius=None)
-    >> print(regions)
+    >>> # Generate a finite 2D Voronoi object.
+    >>> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
+    >>> points = [[0, 0], [20, 30], [-50, 30], [-10, -10]]
+    >>> vor = scipy.spatial.Voronoi(points)
+    >>> regions, vorinfo = pyvoro.create_finite_voronoi_2d(vor, radius=None)
+    >>> print(regions)
     [[3, 2, 0, 1], [0, 4, 5], [7, 1, 0, 6], [9, 8, 1]]
-    >> print(vorinfo)
+    >>> print(vorinfo)
     [[  -15.            31.66666667]
      [  -25.            15.        ]
      [ 6641.4023547  -4405.93490314]
@@ -277,13 +285,13 @@ def find_polygon_centroids(poly, points):
 
     Examples
     --------
-    # Find the regions of the Voronoi partition.
-    >> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
-    >> points = [[0, 0], [20, 30], [-50, 30], [-10, -10]]
-    >> vorinfo, centroids = helpers.find_polygon_centroids(polygon, points)
-    >> print(vorinfo[0]) # Regions of the partition.
+    >>> # Find the regions of the Voronoi partition.
+    >>> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
+    >>> points = [[0, 0], [20, 30], [-50, 30], [-10, -10]]
+    >>> vorinfo, centroids = pyvoro.find_polygon_centroids(polygon, points)
+    >>> print(vorinfo[0]) # Regions of the partition.
     [[3, 2, 0, 1], [0, 4, 5], [7, 1, 0, 6], [9, 8, 1]]   
-    >> print(vorinfo[1]) # Vertices defining the convex hull of the regions.
+    >>> print(vorinfo[1]) # Vertices defining the convex hull of the regions.
     array([[  -15.        ,    31.66666667],
            [  -25.        ,    15.        ],
            [ 6641.4023547 , -4405.93490314],
@@ -294,12 +302,15 @@ def find_polygon_centroids(poly, points):
            [-5681.85424949, -5641.85424949],
            [ 5631.85424949, -5641.85424949],
            [-5681.85424949, -5641.85424949]])
-    >> print(centroids)
-    [[7.043367194231445, 1.9724402251231876], [28.929774946440688, 43.64720832302304], [-51.68553805648806, 27.959361526264278], [-33.479077928361086, -31.697626888791707]]
+    >>> print(centroids)
+    [[7.043367194231445, 1.9724402251231876], 
+     [28.929774946440688, 43.64720832302304], 
+     [-51.68553805648806, 27.959361526264278], 
+     [-33.479077928361086, -31.697626888791707]]
 
     See Also
     --------
-    See also the function helpers.create_finite_voronoi_2d(vor, radius=None).
+    pyvoro.create_finite_voronoi_2d : subprocedure
     """
     vor = Voronoi(points)
     regions, vertices = create_finite_voronoi_2d(vor)
@@ -318,11 +329,6 @@ def find_polygon_centroids(poly, points):
     return [regions, vertices], centroids
 
 
-"""
-TRIANGULATION CODE GOES HERE
-"""
-
-
 def create_triangulation(poly, points, scheme=None):
     """ Computes the triangulation of the convex hull using either the defualt scheme, or by choosing the centroid as the leverage point (delaunay).
     
@@ -339,8 +345,6 @@ def create_triangulation(poly, points, scheme=None):
     -------
     triangulation : list
         List containing the vertices that completely define the triangles that form the triangulation.
-
-    Finish documentation later.
     """
     if scheme is None:
         triangulation = shapely.ops.triangulate(poly)
@@ -531,10 +535,9 @@ def multivariate_gaussian(
     func : array-like
         The value of the multivariate Gaussian function at the prescribed point x. Potentially vectorized using Numpy based on the vectorized flag.
 
-    Example
-    -------
-
-    Finish documentation later.
+    Examples
+    --------
+    >>> 123
     """
     # Dimension of the Gaussian.
     dim = 2
@@ -587,11 +590,12 @@ def weighted_center_function(x, mu, sigma, vectorize=False, vector=False):
 
     Returns
     -------
+    func : array-like
+        The value of the multivariate Gaussian function at the prescribed point x. Potentially vectorized using Numpy based on the vectorized flag. 
 
-    Example
-    -------
-
-    Finish documentation later.
+    Examples
+    --------
+    >>> 123
     """
     # Dimension of the Gaussian.
     dim = 2
@@ -632,15 +636,16 @@ def dmultivariate_gaussian(x, mu, sigma, time_step, scheme="fd", vectorize=False
 
     Returns
     -------
+    func : array-like
+        The value of the multivariate Gaussian function at the prescribed point x. Potentially vectorized using Numpy based on the vectorized flag.
 
     Notes
     -----
-    * As of version 0.2, central differencing is not supported. Most likely, central differencing will never be supported.
+    As of version 0.2, central differencing is not supported. Most likely, central differencing will never be supported.
 
-    Example
-    -------
-
-    Finish documentation later.
+    Examples
+    --------
+    >>> 123
     """
     if scheme is "fd":
         if vectorize:
@@ -673,7 +678,7 @@ def dweighted_center_function(x, mu, sigma, time_step, scheme="fd", vectorize=Fa
     mu : array-like
         A (dim x 2, 3) array containing the mean of the multivariate Gaussian at either 2 time steps or 3 time steps. Can pass any number of time steps, but only the first 2 or 3 columns are used.
     sigma : array-like
-         A (dim x 2, 3) array containing the standard deviation of the multivariate Gaussian at either 2 time steps or 3 time steps. Can pass any number of time steps, but only the first 2 or 3 columns are used. 
+        A (dim x 2, 3) array containing the standard deviation of the multivariate Gaussian at either 2 time steps or 3 time steps. Can pass any number of time steps, but only the first 2 or 3 columns are used. 
     time_step : float
         The time step used for the numerical approximation.
     scheme : string, optional
@@ -683,11 +688,12 @@ def dweighted_center_function(x, mu, sigma, time_step, scheme="fd", vectorize=Fa
     
     Returns
     -------
-
-    Example
-    -------
-
-    Finish documentation later.
+    func : array-like
+        The value of the multivariate Gaussian function at the prescribed point x. Potentially vectorized using Numpy based on the vectorized flag.
+    
+    Examples
+    --------
+    >>> 123
     """
     if vectorize:
         return np.vectorize(
@@ -729,13 +735,13 @@ def compute_closest_point(poly, points):
 
     Examples
     --------
-    # Find coordinates of agent that is assigned to a rectangle.
-    >> polygon = shapely.geometry.Polygon([[0, 0], [10, 10], [0, 10], [10, 0]])
-    >> points = [[5, 5], [20, 20], [80, 80], [100, 100]]
-    >> closest_point, idx_closest_point = helpers.compute_closest_point(polygon, points)
-    >> print(closest_point)
+    >>> # Find coordinates of agent that is assigned to a rectangle.
+    >>> polygon = shapely.geometry.Polygon([[0, 0], [10, 10], [0, 10], [10, 0]])
+    >>> points = [[5, 5], [20, 20], [80, 80], [100, 100]]
+    >>> closest_point, idx_closest_point = pyvoro.compute_closest_point(polygon, points)
+    >>> print(closest_point)
     [5, 5]
-    >> print(idx_closest_point)
+    >>> print(idx_closest_point)
     0
     """
     closest_point = None
@@ -769,9 +775,9 @@ def create_transparent_cmap(cmap, N=255):
 
     Examples
     --------
-    # Generates a transparent colormap based on the RED colormap scheme from Matplotlib.
-    >> from matplotlib import pyplot as plt
-    >> transparent_cmap = helpers.create_transparent_cmap(plt.cm.Reds)
+    >>> # Generates a transparent colormap based on the RED colormap scheme from Matplotlib.
+    >>> from matplotlib import pyplot as plt
+    >>> transparent_cmap = pyvoro.create_transparent_cmap(plt.cm.Reds)
     """
     transparent_cmap = cmap
     transparent_cmap._init()

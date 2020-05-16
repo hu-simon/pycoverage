@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: pycoverage
+Version: 0.2
+Summary: Package containing utilities to handle coverage control algorithms. These tools were developed for the MinAU project.
+Home-page: https://nodes.ucsd.edu/svn/repos/codes/2019d_Coverage-python
+Author: Jun Hao (Simon) Hu
+Author-email: simonhu@ieee.org
+License: MPL-2.0
+Description: UNKNOWN
+Platform: UNKNOWN

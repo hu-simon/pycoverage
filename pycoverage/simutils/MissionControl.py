@@ -1,5 +1,7 @@
-"""
-Python class for creating high-fidelity simulations.
+""" Python class used for creating low and high fidelity simulations.
+
+Some more words here to further explain this module.
+
 """
 
 import time
@@ -12,7 +14,7 @@ import scipy.integrate as scint
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-from pycoverage.vorutils import vorutils
+from pycoverage.vorutils import pyvoro
 
 
 class MissionControl:
@@ -23,4 +25,3 @@ class MissionControl:
 class BasicSimulation:
     def __init__(self, sim_params, env_params, heat_params):
         pass
-
