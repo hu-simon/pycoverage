@@ -12,3 +12,4 @@ import warnings
 
 from . import vorutils
 from . import simutils
+from . import visutils

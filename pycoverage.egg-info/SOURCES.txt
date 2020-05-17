@@ -9,5 +9,7 @@ pycoverage.egg-info/not-zip-safe
 pycoverage.egg-info/top_level.txt
 pycoverage/simutils/MissionControl.py
 pycoverage/simutils/__init__.py
+pycoverage/visutils/Faces.py
+pycoverage/visutils/__init__.py
 pycoverage/vorutils/__init__.py
 pycoverage/vorutils/pyvoro.py

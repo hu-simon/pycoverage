@@ -38,6 +38,6 @@ setup(
     author="Jun Hao (Simon) Hu",
     author_email="simonhu@ieee.org",
     license="MPL-2.0",
-    packages=["pycoverage", "pycoverage.vorutils", "pycoverage.simutils"],
+    packages=["pycoverage", "pycoverage.vorutils", "pycoverage.simutils", "pycoverage.visutils"],
     zip_safe=False,
 )

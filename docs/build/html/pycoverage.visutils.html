@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>pycoverage.visutils package &#8212; PyCoverage v0.2 User Manual</title>
+    <link rel="stylesheet" href="_static/bootstrap-astropy.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
+
+  </head><body>
+<div class="topbar">
+  <a class="brand" title="Documentation Home" href="index.html"><span id="logotext1">astro</span><span id="logotext2">py</span><span id="logotext3">:docs</span></a>
+  <ul>
+    
+    <li><a class="homelink" title="Astropy Homepage" href="http://www.astropy.org"></a></li>
+    <li><a title="General Index" href="genindex.html">Index</a></li>
+    <li><a title="Module Index" href="py-modindex.html">Modules</a></li>
+    <li>
+      
+      
+<form action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      
+    </li>
+  </ul>
+</div>
+
+<div class="related">
+    <h3>Navigation</h3>
+    <ul>
+      <li>
+	<a href="index.html">PyCoverage v0.2 User Manual</a>
+	 &#187;
+      </li>
+      
+       
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pycoverage-visutils-package">
+<h1>pycoverage.visutils package<a class="headerlink" href="#pycoverage-visutils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pycoverage.visutils.Faces">
+<span id="pycoverage-visutils-faces-module"></span><h2>pycoverage.visutils.Faces module<a class="headerlink" href="#module-pycoverage.visutils.Faces" title="Permalink to this headline">¶</a></h2>
+<p>Python implementation of the Faces class, which helps with parsing the simplex information passed by SciPy Spatial.</p>
+<p>This class is required since the simplex information given by SciPy Spatial returns the triangulation of the region. Triangles that are coplanar are combined to make the output look nice.</p>
+<dl class="py class">
+<dt id="pycoverage.visutils.Faces.Faces">
+<em class="property">class </em><code class="sig-prename descclassname">pycoverage.visutils.Faces.</code><code class="sig-name descname">Faces</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tri</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'convex_hull'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.visutils.Faces.Faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Faces class, which represents a face of a convex hull.</p>
+<p>Finish documentation later.</p>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 64%" />
+<col style="width: 36%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>compute_norm</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>is_neighbor</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>order_vertices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>simplify</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="pycoverage.visutils.Faces.Faces.compute_norm">
+<code class="sig-name descname">compute_norm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.visutils.Faces.Faces.compute_norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycoverage.visutils.Faces.Faces.is_neighbor">
+<code class="sig-name descname">is_neighbor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">tri_1</span></em>, <em class="sig-param"><span class="n">tri_2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.visutils.Faces.Faces.is_neighbor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycoverage.visutils.Faces.Faces.order_vertices">
+<code class="sig-name descname">order_vertices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">vertices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.visutils.Faces.Faces.order_vertices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycoverage.visutils.Faces.Faces.simplify">
+<code class="sig-name descname">simplify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.visutils.Faces.Faces.simplify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycoverage.visutils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycoverage.visutils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Page Contents</h3>
+<ul>
+<li><a class="reference internal" href="#">pycoverage.visutils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pycoverage.visutils.Faces">pycoverage.visutils.Faces module</a></li>
+<li><a class="reference internal" href="#module-pycoverage.visutils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycoverage.visutils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<form action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<footer class="footer">
+  <p class="pull-right">
+    <a href="_sources/pycoverage.visutils.rst.txt"
+       rel="nofollow">Page Source</a> &nbsp;
+    <a href="#">Back to Top</a></p>
+  <p>
+    &copy; Copyright 2020, Simon Hu.<br/>
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 3.0.3. &nbsp;
+  </p>
+</footer>
+  </body>
+</html>
