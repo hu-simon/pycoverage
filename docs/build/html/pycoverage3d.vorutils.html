@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>pycoverage3d.vorutils package &#8212; PyCoverage v0.2 User Manual</title>
+    <link rel="stylesheet" href="_static/bootstrap-astropy.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
+
+  </head><body>
+<div class="topbar">
+  <a class="brand" title="Documentation Home" href="index.html"><span id="logotext1">astro</span><span id="logotext2">py</span><span id="logotext3">:docs</span></a>
+  <ul>
+    
+    <li><a class="homelink" title="Astropy Homepage" href="http://www.astropy.org"></a></li>
+    <li><a title="General Index" href="genindex.html">Index</a></li>
+    <li><a title="Module Index" href="py-modindex.html">Modules</a></li>
+    <li>
+      
+      
+<form action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      
+    </li>
+  </ul>
+</div>
+
+<div class="related">
+    <h3>Navigation</h3>
+    <ul>
+      <li>
+	<a href="index.html">PyCoverage v0.2 User Manual</a>
+	 &#187;
+      </li>
+      
+       
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pycoverage3d-vorutils-package">
+<h1>pycoverage3d.vorutils package<a class="headerlink" href="#pycoverage3d-vorutils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pycoverage3d.vorutils.pyvoro3d">
+<span id="pycoverage3d-vorutils-pyvoro3d-module"></span><h2>pycoverage3d.vorutils.pyvoro3d module<a class="headerlink" href="#module-pycoverage3d.vorutils.pyvoro3d" title="Permalink to this headline">¶</a></h2>
+<p>Python file containing utilities for basic Voronoi operations in 3D.</p>
+<p>Some other documentation here, explaining more about this module.</p>
+<dl class="py function">
+<dt id="pycoverage3d.vorutils.pyvoro3d.check_membership">
+<code class="sig-prename descclassname">pycoverage3d.vorutils.pyvoro3d.</code><code class="sig-name descname">check_membership</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hull_points</span></em>, <em class="sig-param"><span class="n">point</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage3d.vorutils.pyvoro3d.check_membership" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if <code class="docutils literal notranslate"><span class="pre">point</span></code> is contained in the convex polygon determined by <code class="docutils literal notranslate"><span class="pre">hull_points</span></code>.</p>
+<p>Membership is checked by determining whether the point can be written as a convex combination of the points that define the convex hull. This is equivalent to solving the linear problem…finish the problem later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>hull_points</strong><span class="classifier">array-like</span></dt><dd><p>Array-like containing n-dimensional coordinates of the points that define the convex hull.</p>
+</dd>
+<dt><strong>point</strong><span class="classifier">array-like</span></dt><dd><p>Array-like containing n-dimensional coordinates of the point for which membership is checked.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>success</strong><span class="classifier">bool</span></dt><dd><p>Boolean determining whether <code class="docutils literal notranslate"><span class="pre">point</span></code> is contained in the convex polygon determined by <code class="docutils literal notranslate"><span class="pre">hull_points</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The input to this function is not restricted to points in 3D. In fact, this algorithm generalizes to n-dimensions.</p>
+<p>Note that by the definition of a convex hull, it is not neccessary that hull_points define a convex hull. The algorithm also works on any set of points, since a subset of those points will be guaranteed to define a convex hull.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Test if point (0.0, 0.0, 1.01) is in the unit cube. Expecting False.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unit_cube</span> <span class="o">=</span> <span class="p">[</span>
+<span class="go">    [0, 0, 0],</span>
+<span class="go">    [0, 0, 1],</span>
+<span class="go">    [0, 1, 0],</span>
+<span class="go">    [0, 1, 1],</span>
+<span class="go">    [1, 1, 0],</span>
+<span class="go">    [1, 1, 1],</span>
+<span class="go">    [1, 0, 0],</span>
+<span class="go">    [1, 0, 1],</span>
+<span class="go">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyvoro</span><span class="o">.</span><span class="n">check_membership</span><span class="p">(</span><span class="n">unit_cube</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Test if point (0.0, 0.0, 1.0) is in the unit cube. Expecting True.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyvoro</span><span class="o">.</span><span class="n">check_membership</span><span class="p">(</span><span class="n">unit_cube</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage3d.vorutils.pyvoro3d.generate_random_points">
+<code class="sig-prename descclassname">pycoverage3d.vorutils.pyvoro3d.</code><code class="sig-name descname">generate_random_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">num_points</span></em>, <em class="sig-param"><span class="n">min_dist</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage3d.vorutils.pyvoro3d.generate_random_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uniformly generates random tuples of the form (x, y, z) which lie in the interior of a convex polygon, using rejection sampling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>poly</strong><span class="classifier">SciPy ConvexHull</span></dt><dd><p>Polygon used for determining membership during rejection sampling.</p>
+</dd>
+<dt><strong>num_points</strong><span class="classifier">int</span></dt><dd><p>Number of points to be generated.</p>
+</dd>
+<dt><strong>min_dist</strong><span class="classifier">float, optional</span></dt><dd><p>Minimum separation distance enforced for each point, by default 0.0 representing no separation distance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>random_points</strong><span class="classifier">array-like</span></dt><dd><p>Unordered array-like containing tuples of the form (x, y, z) representing the coordinates of the randomly sampled points. These coordinates are guaranteed to be contained in the polygon and separately by a distance of <code class="docutils literal notranslate"><span class="pre">min_dist</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function does not compute the packing number, which is needed to determine if it is feasbile to generate <code class="docutils literal notranslate"><span class="pre">num_points</span></code> points that are separated within a distance of <code class="docutils literal notranslate"><span class="pre">min_dist</span></code>. It is the responsibility of the user to ensure that the problem is feasible.</p>
+<p>Unlike the 2D variant, it is not assumed that the polygon vertices are ordered in counter-clockwise order.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage3d.vorutils.pyvoro3d.warning_on_one_line">
+<code class="sig-prename descclassname">pycoverage3d.vorutils.pyvoro3d.</code><code class="sig-name descname">warning_on_one_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em>, <em class="sig-param"><span class="n">category</span></em>, <em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">lineno</span></em>, <em class="sig-param"><span class="n">file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">line</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage3d.vorutils.pyvoro3d.warning_on_one_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pycoverage3d.vorutils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycoverage3d.vorutils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Page Contents</h3>
+<ul>
+<li><a class="reference internal" href="#">pycoverage3d.vorutils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pycoverage3d.vorutils.pyvoro3d">pycoverage3d.vorutils.pyvoro3d module</a></li>
+<li><a class="reference internal" href="#module-pycoverage3d.vorutils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pycoverage3d.vorutils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<form action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<footer class="footer">
+  <p class="pull-right">
+    <a href="_sources/pycoverage3d.vorutils.rst.txt"
+       rel="nofollow">Page Source</a> &nbsp;
+    <a href="#">Back to Top</a></p>
+  <p>
+    &copy; Copyright 2020, Simon Hu.<br/>
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 3.0.3. &nbsp;
+  </p>
+</footer>
+  </body>
+</html>

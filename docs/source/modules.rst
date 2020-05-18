@@ -1,7 +1,7 @@
-pycoverage
-==========
+pycoverage3d
+============
 
 .. toctree::
    :maxdepth: 4
 
-   pycoverage
+   pycoverage3d

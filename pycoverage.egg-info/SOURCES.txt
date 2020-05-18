@@ -13,3 +13,7 @@ pycoverage/visutils/Faces.py
 pycoverage/visutils/__init__.py
 pycoverage/vorutils/__init__.py
 pycoverage/vorutils/pyvoro.py
+pycoverage3d/__init__.py
+pycoverage3d/version.py
+pycoverage3d/vorutils/__init__.py
+pycoverage3d/vorutils/pyvoro3d.py

@@ -71,6 +71,73 @@
 <dt id="pycoverage.simutils.MissionControl.BasicSimulation">
 <em class="property">class </em><code class="sig-prename descclassname">pycoverage.simutils.MissionControl.</code><code class="sig-name descname">BasicSimulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_params</span></em>, <em class="sig-param"><span class="n">env_params</span></em>, <em class="sig-param"><span class="n">heat_params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.simutils.MissionControl.BasicSimulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A high-level low-fidelity class for creating simulations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sim_params</strong><span class="classifier">dict</span></dt><dd><p>Dictionary containing the simulation parameters.</p>
+</dd>
+<dt><strong>env_params</strong><span class="classifier">dict</span></dt><dd><p>Dictionary containing the environment parameters.</p>
+</dd>
+<dt><strong>heat_params</strong><span class="classifier">dict</span></dt><dd><p>Dictionary containing the adversarial parameters.</p>
+</dd>
+<dt><strong>operating_env</strong><span class="classifier">Shapely Polygon</span></dt><dd><p>Polygon representing the operating environment.</p>
+</dd>
+<dt><strong>cost_data</strong><span class="classifier">array-like</span></dt><dd><p>Array-like object containing information about the cost value from the simulation.</p>
+</dd>
+<dt><strong>vori_data</strong><span class="classifier">array-like</span></dt><dd><p>Array-like object containing information about the Voronoi partitions from the simulation.</p>
+</dd>
+<dt><strong>path-data</strong><span class="classifier">array-like</span></dt><dd><p>Array-like object containing information about the agent coordinates from the simulation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 53%" />
+<col style="width: 47%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>__init__(sim_params, env_params, heat_params)</strong></p></td>
+<td><p>Instantiates a BasicSimulation object.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>obtain_simulation_data(path_to_folder=None)</strong></p></td>
+<td><p>Gathers data for visualizing the simulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>create_simulation(pause_rate=0.1)</strong></p></td>
+<td><p>Creates a visualization using matplotlib.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="pycoverage.simutils.MissionControl.BasicSimulation.create_simulation">
+<code class="sig-name descname">create_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pause_rate</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.simutils.MissionControl.BasicSimulation.create_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a visualization using matplotlib.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pause_rate</strong><span class="classifier">float, optional</span></dt><dd><p>The pause rate passed onto plt.pause(), by default 0.1.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycoverage.simutils.MissionControl.BasicSimulation.obtain_simulation_data">
+<code class="sig-name descname">obtain_simulation_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">path_to_folder</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.simutils.MissionControl.BasicSimulation.obtain_simulation_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers data for visualizing the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>path_to_folder</strong><span class="classifier">str, optional</span></dt><dd><p>Absolute path to the directory used to store the data, by default None.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
