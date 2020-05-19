@@ -26,6 +26,7 @@ warnings.simplefilter("module", PendingDeprecationWarning)
 
 import shapely
 import numpy as np
+import scipy.spatial
 import scipy.optimize
 
 
@@ -114,7 +115,7 @@ def check_membership(hull_points, point):
     return success
 
 
-def generate_random_points(chull, num_points, min_dist=0.0):
+def generate_random_points(chull, num_points, min_dist=0.0, random_seed=None):
     """ Uniformly generates random tuples of the form (x, y, z) which lie in the interior of a convex polygon, using rejection sampling. 
     
     Parameters
@@ -124,7 +125,9 @@ def generate_random_points(chull, num_points, min_dist=0.0):
     num_points : int
         Number of points to be generated.
     min_dist : float, optional
-        Minimum separation distance enforced for each point, by default 0.0 representing no separation distance.
+        Minimum separation distance enforced for each point, by default 0.0, representing no separation distance.
+    random_seed : int, optional
+        Random seed value passed to numpy for reproducability, by default None.
 
     Returns
     -------
@@ -139,12 +142,27 @@ def generate_random_points(chull, num_points, min_dist=0.0):
 
     Examples
     -------- 
-    >>> # TODO
+    >>> # Generates ten random points contained in the unit cube, with a minimum separation distance of 0.2.
+    >>> unit_cube = [
+        [0, 0, 0],
+        [0, 0, 1],
+        [0, 1, 0],
+        [0, 1, 1],
+        [1, 1, 0],
+        [1, 1, 1],
+        [1, 0, 0],
+        [1, 0, 1],
+    ]
+    >>> pyvoro3d.generate_random_points(unit_cube, num_points=10, min_dist=0.2)
+    
 
     See Also
     --------
     pyvoro3d.check_membership : Used for determining membership. 
     """
+    if random_seed is not None:
+        np.random.seed(random_seed)
+
     vertices = chull.points
     min_x, max_x = vertices[:, 0].min(), vertices[:, 0].max()
     min_y, max_y = vertices[:, 1].min(), vertices[:, 1].max()
@@ -170,6 +188,7 @@ def generate_random_points(chull, num_points, min_dist=0.0):
             x_sample = np.random.uniform(min_x, max_x)
             y_sample = np.random.uniform(min_y, max_y)
             z_sample = np.random.uniform(min_z, maz_z)
+            point = np.array([x_sample, y_sample, z_sample])
 
     while len(x_random) < num_points:
         x_sample = np.random.uniform(min_x, max_x)
@@ -179,7 +198,7 @@ def generate_random_points(chull, num_points, min_dist=0.0):
 
         if check_membership(vertices, point):
             distances = np.linalg.norm(
-                point.reshape(3, 1) - np.array((x_random, y_random, z_random))
+                point.reshape(3, 1) - np.array((x_random, y_random, z_random)), axis=0
             )
             min_distance = np.min(distances)
             if min_distance >= min_dist:
@@ -191,3 +210,27 @@ def generate_random_points(chull, num_points, min_dist=0.0):
 
     random_points = [[x_random[i], y_random[i], z_random[i]] for i in range(num_points)]
     return np.array(random_points)
+
+
+def finite_voronoi_partition(vor, radius=None):
+    """ Given an infinite Voronoi partition, creates a finite Voronoi partition in 3D.
+
+    This is done by extending the infinite ridges and then taking intersections of sets.
+    
+    Parameters
+    ----------
+    vor : SciPy Voronoi
+        An infinite Voronoi partition strcuture.
+    radius : float, optional
+        Float representing the distance to "the point at infinity", i.e. the point at which the infinite ridges are extended to, by default None. If no radius is specified, then the radius is set to the furthest point in the partition, multiplied by 100.
+
+    Returns
+    -------
+
+    Examples
+    --------
+
+    See Also
+    --------
+    """
+    pass
