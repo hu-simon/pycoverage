@@ -41,7 +41,7 @@ def check_membership(hull_points, point):
     """ Determines if ``point`` is contained in the convex polygon determined by ``hull_points``.
 
     Membership is checked by determining whether the point can be written as a convex combination of the points that define the convex hull. This is equivalent to solving the linear problem...finish the problem later.
-    
+
     Parameters
     ----------
     hull_points : array-like
@@ -116,12 +116,12 @@ def check_membership(hull_points, point):
 
 
 def generate_random_points(chull, num_points, min_dist=0.0, random_seed=None):
-    """ Uniformly generates random tuples of the form (x, y, z) which lie in the interior of a convex polygon, using rejection sampling. 
+    """ Generates random tuples of the form (x, y, z) which lie in the interior of a convex polygon and are separated by ``min_dist``. The generation is done by uniformly sampling the cube, asssuming each coordinate is independent, and then keeping only the points that are within ``min_dist`` of the other points and are contained in the convex hull. 
     
     Parameters
     ----------
     chull : SciPy ConvexHull
-        Polygon used for determining membership during rejection sampling.
+        Convex hull used for determining membership during rejection sampling.
     num_points : int
         Number of points to be generated.
     min_dist : float, optional
@@ -132,10 +132,12 @@ def generate_random_points(chull, num_points, min_dist=0.0, random_seed=None):
     Returns
     -------
     random_points : array-like
-        Unordered array-like containing tuples of the form (x, y, z) representing the coordinates of the randomly sampled points. These coordinates are guaranteed to be contained in the polygon and separately by a distance of ``min_dist``. 
+        Unordered array-like containing tuples of the form (x, y, z) representing the coordinates of the randomly sampled points. These coordinates are guaranteed to be contained in the convex hull and separately by a distance of ``min_dist``. 
 
     Notes
     -----
+    DO NOT use this function for uniformly sampling a convex hull. This function does not create a uniform sampling of points on the convex hull. 
+
     This function does not compute the packing number, which is needed to determine if it is feasbile to generate ``num_points`` points that are separated within a distance of ``min_dist``. It is the responsibility of the user to ensure that the problem is feasible.
 
     Unlike the 2D variant, it is not assumed that the polygon vertices are ordered in counter-clockwise order.
@@ -184,6 +186,7 @@ def generate_random_points(chull, num_points, min_dist=0.0, random_seed=None):
             y_random.append(np.around(y_sample, 4))
             z_random.append(np.around(z_sample, 4))
             first_point_flag = True
+            print("Generated point 1")
         else:
             x_sample = np.random.uniform(min_x, max_x)
             y_sample = np.random.uniform(min_y, max_y)
@@ -205,6 +208,7 @@ def generate_random_points(chull, num_points, min_dist=0.0, random_seed=None):
                 x_random.append(np.around(x_sample, 4))
                 y_random.append(np.around(y_sample, 4))
                 z_random.append(np.around(z_sample, 4))
+                print("Generated point {}".format(len(x_random)))
         else:
             continue
 

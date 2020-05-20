@@ -117,17 +117,36 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycoverage3d.vorutils.pyvoro3d.finite_voronoi_partition">
+<code class="sig-prename descclassname">pycoverage3d.vorutils.pyvoro3d.</code><code class="sig-name descname">finite_voronoi_partition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vor</span></em>, <em class="sig-param"><span class="n">radius</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage3d.vorutils.pyvoro3d.finite_voronoi_partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an infinite Voronoi partition, creates a finite Voronoi partition in 3D.</p>
+<p>This is done by extending the infinite ridges and then taking intersections of sets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vor</strong><span class="classifier">SciPy Voronoi</span></dt><dd><p>An infinite Voronoi partition strcuture.</p>
+</dd>
+<dt><strong>radius</strong><span class="classifier">float, optional</span></dt><dd><p>Float representing the distance to “the point at infinity”, i.e. the point at which the infinite ridges are extended to, by default None. If no radius is specified, then the radius is set to the furthest point in the partition, multiplied by 100.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycoverage3d.vorutils.pyvoro3d.generate_random_points">
-<code class="sig-prename descclassname">pycoverage3d.vorutils.pyvoro3d.</code><code class="sig-name descname">generate_random_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">num_points</span></em>, <em class="sig-param"><span class="n">min_dist</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage3d.vorutils.pyvoro3d.generate_random_points" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycoverage3d.vorutils.pyvoro3d.</code><code class="sig-name descname">generate_random_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">chull</span></em>, <em class="sig-param"><span class="n">num_points</span></em>, <em class="sig-param"><span class="n">min_dist</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">random_seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage3d.vorutils.pyvoro3d.generate_random_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uniformly generates random tuples of the form (x, y, z) which lie in the interior of a convex polygon, using rejection sampling.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>poly</strong><span class="classifier">SciPy ConvexHull</span></dt><dd><p>Polygon used for determining membership during rejection sampling.</p>
+<dt><strong>chull</strong><span class="classifier">SciPy ConvexHull</span></dt><dd><p>Polygon used for determining membership during rejection sampling.</p>
 </dd>
 <dt><strong>num_points</strong><span class="classifier">int</span></dt><dd><p>Number of points to be generated.</p>
 </dd>
-<dt><strong>min_dist</strong><span class="classifier">float, optional</span></dt><dd><p>Minimum separation distance enforced for each point, by default 0.0 representing no separation distance.</p>
+<dt><strong>min_dist</strong><span class="classifier">float, optional</span></dt><dd><p>Minimum separation distance enforced for each point, by default 0.0, representing no separation distance.</p>
+</dd>
+<dt><strong>random_seed</strong><span class="classifier">int, optional</span></dt><dd><p>Random seed value passed to numpy for reproducability, by default None.</p>
 </dd>
 </dl>
 </dd>
@@ -138,11 +157,29 @@
 </dl>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyvoro3d.check_membership</span></code></dt><dd><p>Used for determining membership.</p>
+</dd>
+</dl>
+</div>
 <p class="rubric">Notes</p>
 <p>This function does not compute the packing number, which is needed to determine if it is feasbile to generate <code class="docutils literal notranslate"><span class="pre">num_points</span></code> points that are separated within a distance of <code class="docutils literal notranslate"><span class="pre">min_dist</span></code>. It is the responsibility of the user to ensure that the problem is feasible.</p>
 <p>Unlike the 2D variant, it is not assumed that the polygon vertices are ordered in counter-clockwise order.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generates ten random points contained in the unit cube, with a minimum separation distance of 0.2.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unit_cube</span> <span class="o">=</span> <span class="p">[</span>
+<span class="go">    [0, 0, 0],</span>
+<span class="go">    [0, 0, 1],</span>
+<span class="go">    [0, 1, 0],</span>
+<span class="go">    [0, 1, 1],</span>
+<span class="go">    [1, 1, 0],</span>
+<span class="go">    [1, 1, 1],</span>
+<span class="go">    [1, 0, 0],</span>
+<span class="go">    [1, 0, 1],</span>
+<span class="go">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyvoro3d</span><span class="o">.</span><span class="n">generate_random_points</span><span class="p">(</span><span class="n">unit_cube</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">min_dist</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
