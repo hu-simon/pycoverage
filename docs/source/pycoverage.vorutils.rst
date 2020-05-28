@@ -4,6 +4,14 @@ pycoverage.vorutils package
 Submodules
 ----------
 
+pycoverage.vorutils.playground module
+-------------------------------------
+
+.. automodule:: pycoverage.vorutils.playground
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pycoverage.vorutils.pyvoro module
 ---------------------------------
 

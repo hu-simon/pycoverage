@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pycoverage3d.visutils
    pycoverage3d.vorutils
 
 Submodules

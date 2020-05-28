@@ -63,6 +63,240 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pycoverage.vorutils.playground">
+<span id="pycoverage-vorutils-playground-module"></span><h2>pycoverage.vorutils.playground module<a class="headerlink" href="#module-pycoverage.vorutils.playground" title="Permalink to this headline">¶</a></h2>
+<p>Python playground file used for testing algorithm ideas.</p>
+<dl class="py function">
+<dt id="pycoverage.vorutils.playground.compute_circles">
+<code class="sig-prename descclassname">pycoverage.vorutils.playground.</code><code class="sig-name descname">compute_circles</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.playground.compute_circles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the distances from the centroid to the vertices of the convex polygon and returns circles whose radius are the distances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of significant digits to truncate the computational results, by default 4 significant digits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>circles</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Array containing a list of circles defined by the coordinates (x, y, radius) which determine the circles.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage.vorutils.playground.compute_enclosing_circle">
+<code class="sig-prename descclassname">pycoverage.vorutils.playground.</code><code class="sig-name descname">compute_enclosing_circle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.playground.compute_enclosing_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the smallest enclosing circle that contains the convex polygon.</p>
+<p>This is computed by finding the geometric center of the polygon and then finding the largest distance between the centroid and <code class="docutils literal notranslate"><span class="pre">points</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of siginificant digits to truncate the computational results, by default 4 significant digits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>circle</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Array containing the coordinates (x, y, radius) that define the minimum enclosing circle.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage.vorutils.playground.compute_polygon_area">
+<code class="sig-prename descclassname">pycoverage.vorutils.playground.</code><code class="sig-name descname">compute_polygon_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.playground.compute_polygon_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the area of a convex polygon defined by points using a shoelace formula.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of significant digits to truncate the computational results, by default 4 significant digits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>area</strong><span class="classifier">float</span></dt><dd><p>Area of the convex polygon, defined by <code class="docutils literal notranslate"><span class="pre">points</span></code>, truncated to <code class="docutils literal notranslate"><span class="pre">sig_dig</span></code> significant digits.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage.vorutils.playground.compute_polygon_centroid">
+<code class="sig-prename descclassname">pycoverage.vorutils.playground.</code><code class="sig-name descname">compute_polygon_centroid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.playground.compute_polygon_centroid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the geometric centroid of the convex polygon, defined by <code class="docutils literal notranslate"><span class="pre">points</span></code>, using a shoelace formula.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of significant digits to truncate the computational results, by default 4 significant digits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>centroid</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Geometric centroid of the convex polygon, defined by <code class="docutils literal notranslate"><span class="pre">points</span></code>, truncated to <code class="docutils literal notranslate"><span class="pre">sig_dig</span></code> significant digits.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage.vorutils.playground.find_meb">
+<code class="sig-prename descclassname">pycoverage.vorutils.playground.</code><code class="sig-name descname">find_meb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">epsilon</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">stop_tol</span><span class="o">=</span><span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.playground.find_meb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes an approximation to the minimum enclosing ball that encloses the convex polygon defined by <code class="docutils literal notranslate"><span class="pre">points</span></code>.</p>
+<p>The minimum enclosing ball is computed using the Frank-Wolfe algorithm (insert reference here) and iteratively converges to the minimum enclosing ball.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing tuples (x, y) representing coorddinates in 2-D of the points defining the convex polygon.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of siginificant digits to truncate the computational ressults, by default 4 significant digits.</p>
+</dd>
+<dt><strong>epsilon</strong><span class="classifier">float, optional</span></dt><dd><p>Parameter determining the acceptable error of the approximation and number of iterations, by default 1e-3.</p>
+</dd>
+<dt><strong>stop_tol</strong><span class="classifier">float, optional</span></dt><dd><p>Stopping tolerance used for ending iterations early.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>circle</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing the coordinates (x, y, radius) that define the minimum enclosing ball.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Note that the smaller <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> is, the more accurate the result. However, this also increases the number of iterations by a factor of two-fold, so choose this parameter wisely.</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">stop_tol</span></code> is used to determine if the algorithm should be terminated early. If the absolute difference between the newly computed center and the previous center is smaller than <code class="docutils literal notranslate"><span class="pre">stop_tol</span></code>, then the algorithm is terminated early.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage.vorutils.playground.generate_random_points">
+<code class="sig-prename descclassname">pycoverage.vorutils.playground.</code><code class="sig-name descname">generate_random_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">num_points</span></em>, <em class="sig-param"><span class="n">min_dist</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.playground.generate_random_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates random tuples of the form (x, y) which lie in the interior of a convex hull and are separated by <code class="docutils literal notranslate"><span class="pre">min_dist</span></code> distance, using rejection sampling. It is assumed that the hull vertices are ordered in counter-clockwise order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>poly</strong><span class="classifier">shapely.geometry.Polygon instance</span></dt><dd><p>Convex hull used for determining membership during rejection sampling.</p>
+</dd>
+<dt><strong>num_points</strong><span class="classifier">int</span></dt><dd><p>Number of points to be generated.</p>
+</dd>
+<dt><strong>min_dist</strong><span class="classifier">float, optional</span></dt><dd><p>The minimum separation distance enforced for each point, by default 0.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of significant digits to truncate the computational results, by default 4 significant digits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>random_points</strong><span class="classifier">list</span></dt><dd><p>Unordered list of tuples of the form (x, y) representing the randomly sampled points which lie within the convex hull, and are separated by a distance of <code class="docutils literal notranslate"><span class="pre">min_dist</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function does not compute the packing number, which is needed to determine if it is possible to generate <code class="docutils literal notranslate"><span class="pre">num_points</span></code> points that are separated by a distance of <code class="docutils literal notranslate"><span class="pre">min_dist</span></code> distance. It is the responsibility of the user to ensure that the problem is feasible.</p>
+<p>It is assumed that the hull vertices are ordered in counter-clockwise order.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generates 3 points with ``min_dist`` of 1.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hull</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">59</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">],</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random_points</span> <span class="o">=</span> <span class="n">geoutils</span><span class="o">.</span><span class="n">generate_random_points</span><span class="p">(</span><span class="n">hull</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_dist</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fail case where the problem is not feasible. The result is an infinite runtime!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hull</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">59</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">],</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random_points</span> <span class="o">=</span> <span class="n">geoutils</span><span class="o">.</span><span class="n">generate_random_points</span><span class="p">(</span><span class="n">hull</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_dist</span><span class="o">=</span><span class="mf">100.</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>TODO need to fix the examples so that they work with the sig_dig option.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage.vorutils.playground.plot_all_circles">
+<code class="sig-prename descclassname">pycoverage.vorutils.playground.</code><code class="sig-name descname">plot_all_circles</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">circles</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.playground.plot_all_circles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the convex polygon and the circles obtained from <code class="docutils literal notranslate"><span class="pre">compute_circles()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>poly</strong><span class="classifier">shapely.geometry.Polygon</span></dt><dd><p>The convex polygon representing the original operating environment.</p>
+</dd>
+<dt><strong>circles</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Array containing a list of circles defined by the coordinates (x, y, radius) which determine the circles.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage.vorutils.playground.plot_enclosing_circle">
+<code class="sig-prename descclassname">pycoverage.vorutils.playground.</code><code class="sig-name descname">plot_enclosing_circle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">circle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.playground.plot_enclosing_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the convex polygon and the minimum enclosing circle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>poly</strong><span class="classifier">shapely.geometry.Polygon instance</span></dt><dd><p>The convex polygon representing the original operating environment.</p>
+</dd>
+<dt><strong>circle</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Array containing the coordinates (x, y, radius) that define the minimum enclosing circle.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pycoverage.vorutils.pyvoro">
 <span id="pycoverage-vorutils-pyvoro-module"></span><h2>pycoverage.vorutils.pyvoro module<a class="headerlink" href="#module-pycoverage.vorutils.pyvoro" title="Permalink to this headline">¶</a></h2>
 <p>Python file containing utilities for basic Voronoi operations.</p>
@@ -74,9 +308,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>poly</strong><span class="classifier">Shapely Polygon object</span></dt><dd><p>Polygon representing the domain of operation.</p>
+<dt><strong>poly</strong><span class="classifier">shapely.geometry.Polygon</span></dt><dd><p>Polygon representing the domain of operation.</p>
 </dd>
-<dt><strong>points</strong><span class="classifier">list of tuples</span></dt><dd><p>List of current agent positions.</p>
+<dt><strong>points</strong><span class="classifier">list</span></dt><dd><p>List of current agent positions.</p>
 </dd>
 </dl>
 </dd>
@@ -107,13 +341,65 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycoverage.vorutils.pyvoro.compute_polygon_area">
+<code class="sig-prename descclassname">pycoverage.vorutils.pyvoro.</code><code class="sig-name descname">compute_polygon_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.pyvoro.compute_polygon_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the area of a convex polygon defined by points using a shoelace formula.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of significant digits to truncate the computational results, by default 4 significant digits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>area</strong><span class="classifier">float</span></dt><dd><p>Area of the convex polygon, defined by <code class="docutils literal notranslate"><span class="pre">points</span></code>, truncated to <code class="docutils literal notranslate"><span class="pre">sig_dig</span></code> significant digits.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycoverage.vorutils.pyvoro.compute_polygon_centroid">
+<code class="sig-prename descclassname">pycoverage.vorutils.pyvoro.</code><code class="sig-name descname">compute_polygon_centroid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.pyvoro.compute_polygon_centroid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the geometric centroid of the convex polygon, defined by <code class="docutils literal notranslate"><span class="pre">points</span></code>, using a shoelace formula.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of significant digits to truncate the computational results, by default 4 significant digits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>centroid</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Geometric centroid of the convex polygon, defined by <code class="docutils literal notranslate"><span class="pre">points</span></code>, truncated to <code class="docutils literal notranslate"><span class="pre">sig_dig</span></code> significant digits.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycoverage.vorutils.pyvoro.create_finite_voronoi_2d">
 <code class="sig-prename descclassname">pycoverage.vorutils.pyvoro.</code><code class="sig-name descname">create_finite_voronoi_2d</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vor</span></em>, <em class="sig-param"><span class="n">radius</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.pyvoro.create_finite_voronoi_2d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given an infinite Voronoi partition, creates a finite Voronoi partition in 2D by extending the infinite ridges and taking intersections of sets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>vor</strong><span class="classifier">Scipy Voronoi object</span></dt><dd><p>Object containing information about the infinite Voronoi partition.</p>
+<dt><strong>vor</strong><span class="classifier">scipy.spatial.Voronoi instance</span></dt><dd><p>Object containing information about the infinite Voronoi partition.</p>
 </dd>
 <dt><strong>radius</strong><span class="classifier">float, optional</span></dt><dd><p>Float representing the distance to the “point at infinity”, i.e. the point at which all the infinite ridges are extended to. If no radius is specified, we take the farthest point in the partition and multiply it by 100.</p>
 </dd>
@@ -121,9 +407,9 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>regions</strong><span class="classifier">list of tuples</span></dt><dd><p>Indices of the vertices in the new finite Voronoi partition.</p>
+<dt><strong>regions</strong><span class="classifier">list</span></dt><dd><p>Indices of the vertices in the new finite Voronoi partition.</p>
 </dd>
-<dt><strong>vertices</strong><span class="classifier">list of tuples</span></dt><dd><p>List of coordinates, in (x,y), of the new finite Voronoi partition. These are the same coordinates returned by scipy.spatial.Voronoi() but the points at infinity are also appended to this list.</p>
+<dt><strong>vertices</strong><span class="classifier">list</span></dt><dd><p>List of coordinates, in (x,y), of the new finite Voronoi partition. These are the same coordinates returned by scipy.spatial.Voronoi() but the points at infinity are also appended to this list.</p>
 </dd>
 </dl>
 </dd>
@@ -162,7 +448,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>cmap</strong><span class="classifier">Matplotlib cmap object</span></dt><dd><p>Cmap object containing information about the colormap.</p>
+<dt><strong>cmap</strong><span class="classifier">matplotlib.pyplot.cmap instance</span></dt><dd><p>Cmap object containing information about the colormap.</p>
 </dd>
 <dt><strong>N</strong><span class="classifier">int, optional</span></dt><dd><p>Value used in determining alpha, which determines the opacity of the transparent colormap, by default 255. The value of N should be between 0 and 255.</p>
 </dd>
@@ -170,7 +456,7 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>transparent_cmap</strong><span class="classifier">Matplotlib cmap object</span></dt><dd><p>Cmap object containing information about the transparent colormap.</p>
+<dt><strong>transparent_cmap</strong><span class="classifier">matplotlib.pyplot.cmap instance</span></dt><dd><p>Cmap object containing information about the transparent colormap.</p>
 </dd>
 </dl>
 </dd>
@@ -190,9 +476,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>poly</strong><span class="classifier">Shapely Polygon object</span></dt><dd><p>Polygon representing the domain to be triangulated.</p>
+<dt><strong>poly</strong><span class="classifier">shapely.geometry.Polygon instance</span></dt><dd><p>Polygon representing the domain to be triangulated.</p>
 </dd>
-<dt><strong>points</strong><span class="classifier">list of tuples</span></dt><dd><p>List of points that form the convex hull. Asssumed to be in counter-clockwise order.</p>
+<dt><strong>points</strong><span class="classifier">list</span></dt><dd><p>List of points that form the convex hull. Asssumed to be in counter-clockwise order.</p>
 </dd>
 <dt><strong>scheme</strong><span class="classifier">string, optional</span></dt><dd><p>String representing which scheme to use, by default None. If None, then the default scheme is used where the points that form the hull are used, and if “delaunay” then the points from the hull and the centroid of the polygon are used.</p>
 </dd>
@@ -280,23 +566,57 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="pycoverage.vorutils.pyvoro.find_meb">
+<code class="sig-prename descclassname">pycoverage.vorutils.pyvoro.</code><code class="sig-name descname">find_meb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">epsilon</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">stop_tol</span><span class="o">=</span><span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.pyvoro.find_meb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes an approximation to the minimum enclosing ball that encloses the convex polygon defined by <code class="docutils literal notranslate"><span class="pre">points</span></code>.</p>
+<p>The minimum enclosing ball is computed using the Frank-Wolfe algorithm (insert reference here) and iteratively converges to the minimum enclosing ball.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>points</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing tuples (x, y) representing coorddinates in 2-D of the points defining the convex polygon.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of siginificant digits to truncate the computational ressults, by default 4 significant digits.</p>
+</dd>
+<dt><strong>epsilon</strong><span class="classifier">float, optional</span></dt><dd><p>Parameter determining the acceptable error of the approximation and number of iterations, by default 1e-3.</p>
+</dd>
+<dt><strong>stop_tol</strong><span class="classifier">float, optional</span></dt><dd><p>Stopping tolerance used for ending iterations early.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>circle</strong><span class="classifier">numpy.ndarray instance</span></dt><dd><p>Array containing the coordinates (x, y, radius) that define the minimum enclosing ball.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Note that the smaller <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> is, the more accurate the result. However, this also increases the number of iterations by a factor of two-fold, so choose this parameter wisely.</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">stop_tol</span></code> is used to determine if the algorithm should be terminated early. If the absolute difference between the newly computed center and the previous center is smaller than <code class="docutils literal notranslate"><span class="pre">stop_tol</span></code>, then the algorithm is terminated early.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># TODO</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="pycoverage.vorutils.pyvoro.find_polygon_centroids">
 <code class="sig-prename descclassname">pycoverage.vorutils.pyvoro.</code><code class="sig-name descname">find_polygon_centroids</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.pyvoro.find_polygon_centroids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the new Voronoi points, which are taken to be the centroids of the previous Voronoi partitions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>poly</strong><span class="classifier">Shapely Polygon object</span></dt><dd><p>Polygon used for determining intersection membership.</p>
+<dt><strong>poly</strong><span class="classifier">shapely.geometry.Polygon</span></dt><dd><p>Polygon used for determining intersection membership.</p>
 </dd>
-<dt><strong>points</strong><span class="classifier">list of tuples</span></dt><dd><p>List of tuples (x,y) representing the current positions of agents.</p>
+<dt><strong>points</strong><span class="classifier">list</span></dt><dd><p>List of tuples (x,y) representing the current positions of agents.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>vorinfo</strong><span class="classifier">list of list of tuples</span></dt><dd><p>List containing the regions of the Voronoi partition, and the vertices of the convex hull for each region in the partition.</p>
+<dt><strong>vorinfo</strong><span class="classifier">list</span></dt><dd><p>List containing the regions of the Voronoi partition, and the vertices of the convex hull for each region in the partition.</p>
 </dd>
-<dt><strong>centroids</strong><span class="classifier">list of tuples</span></dt><dd><p>List of tuples (x,y) representing the new centroid positions.</p>
+<dt><strong>centroids</strong><span class="classifier">list</span></dt><dd><p>List of tuples (x,y) representing the new centroid positions.</p>
 </dd>
 </dl>
 </dd>
@@ -340,11 +660,11 @@
 <dl class="py function">
 <dt id="pycoverage.vorutils.pyvoro.generate_points_within_polygon">
 <code class="sig-prename descclassname">pycoverage.vorutils.pyvoro.</code><code class="sig-name descname">generate_points_within_polygon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">num_points</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.pyvoro.generate_points_within_polygon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uniformly generates random tuples of the form (x,y) which lie in the interior of a polygon.</p>
+<dd><p>Generates random tuples of the form (x,y) which lie in the interior of a polygon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>poly</strong><span class="classifier">Shapely Polygon object</span></dt><dd><p>Polygon used for determining membership.</p>
+<dt><strong>poly</strong><span class="classifier">shapely.geometry.Polygon instance</span></dt><dd><p>Polygon used for determining membership.</p>
 </dd>
 <dt><strong>num_points</strong><span class="classifier">int</span></dt><dd><p>Number of points to generate.</p>
 </dd>
@@ -352,7 +672,7 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>random_points</strong><span class="classifier">list of tuples</span></dt><dd><p>Unordered list of tuples in the form (x,y) representing the randomly sampled points, which lie within the polygon.</p>
+<dt><strong>random_points</strong><span class="classifier">list</span></dt><dd><p>Unordered list of tuples in the form (x,y) representing the randomly sampled points, which lie within the polygon.</p>
 </dd>
 </dl>
 </dd>
@@ -374,43 +694,43 @@
 
 <dl class="py function">
 <dt id="pycoverage.vorutils.pyvoro.generate_random_points">
-<code class="sig-prename descclassname">pycoverage.vorutils.pyvoro.</code><code class="sig-name descname">generate_random_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">num_points</span></em>, <em class="sig-param"><span class="n">min_dist</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.pyvoro.generate_random_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uniformly generates random tuples of the form (x,y) which lie in the interior of a polygon, using rejection sampling. It is assumed that the polygon vertices are ordered in counter-clockwise order.</p>
+<code class="sig-prename descclassname">pycoverage.vorutils.pyvoro.</code><code class="sig-name descname">generate_random_points</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">poly</span></em>, <em class="sig-param"><span class="n">num_points</span></em>, <em class="sig-param"><span class="n">min_dist</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">sig_dig</span><span class="o">=</span><span class="default_value">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycoverage.vorutils.pyvoro.generate_random_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates random tuples of the form (x, y) which lie in the interior of a convex hull and are separated by <code class="docutils literal notranslate"><span class="pre">min_dist</span></code> distance, using rejection sampling. It is assumed that the hull vertices are ordered in counter-clockwise order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>poly</strong><span class="classifier">Shapely Polygon object</span></dt><dd><p>Polygon used for determining membership during rejection sampling.</p>
+<dt><strong>poly</strong><span class="classifier">shapely.geometry.Polygon instance</span></dt><dd><p>Convex hull used for determining membership during rejection sampling.</p>
 </dd>
-<dt><strong>num_points</strong><span class="classifier">int</span></dt><dd><p>Number of points that should be generated.</p>
+<dt><strong>num_points</strong><span class="classifier">int</span></dt><dd><p>Number of points to be generated.</p>
 </dd>
-<dt><strong>min_dist</strong><span class="classifier">double, optional</span></dt><dd><p>The minimum separation distance enforced for each point, by default 1 unit.</p>
+<dt><strong>min_dist</strong><span class="classifier">float, optional</span></dt><dd><p>The minimum separation distance enforced for each point, by default 0.</p>
+</dd>
+<dt><strong>sig_dig</strong><span class="classifier">int, optional</span></dt><dd><p>The number of significant digits to truncate the computational results, by default 4 significant digits.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>random_points</strong><span class="classifier">list of tuples</span></dt><dd><p>Unordered list of tuples in the form (x,y) representing the randomly sampled points, which lie within the polygon and are separated by a distance of min_dist.</p>
+<dt><strong>random_points</strong><span class="classifier">list</span></dt><dd><p>Unordered list of tuples of the form (x, y) representing the randomly sampled points which lie within the convex hull, and are separated by a distance of <code class="docutils literal notranslate"><span class="pre">min_dist</span></code>.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This function does not compute the packing number, which is needed to determine if it is possible to generate num_points points that are separated within a distance of min_dist units. It is the responsibility of the user to ensure that the packing number corresponds to the expected result.</p>
-<p>It is assumed that the polygon vertices are ordered in counter-clockwise order.</p>
+<p>This function does not compute the packing number, which is needed to determine if it is possible to generate <code class="docutils literal notranslate"><span class="pre">num_points</span></code> points that are separated by a distance of <code class="docutils literal notranslate"><span class="pre">min_dist</span></code> distance. It is the responsibility of the user to ensure that the problem is feasible.</p>
+<p>It is assumed that the hull vertices are ordered in counter-clockwise order.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generates 3 points with minimum separation distance of 1 unit.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">59</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">],</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">random_points</span> <span class="o">=</span> <span class="n">pyvoro</span><span class="o">.</span><span class="n">generate_random_points</span><span class="p">(</span><span class="n">polygon</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_dist</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">[[-75.10421685576651, 4.123350611217873],</span>
-<span class="go"> [34.510299741753755, 5.890079171808779], </span>
-<span class="go"> [-74.30335320228306, -0.10772421319072123]]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generates 3 points with ``min_dist`` of 1.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hull</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">59</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">],</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random_points</span> <span class="o">=</span> <span class="n">geoutils</span><span class="o">.</span><span class="n">generate_random_points</span><span class="p">(</span><span class="n">hull</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">min_dist</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># FAIL CASE. User asks for unreasonable separation distance, result is an infinite runtime.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">59</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">],</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">random_points</span> <span class="o">=</span> <span class="n">pyvoro</span><span class="o">.</span><span class="n">generate_random_points</span><span class="p">(</span><span class="n">polygon</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_dist</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fail case where the problem is not feasible. The result is an infinite runtime!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hull</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">59</span><span class="p">,</span> <span class="o">-</span><span class="mi">81</span><span class="p">],</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">31</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random_points</span> <span class="o">=</span> <span class="n">geoutils</span><span class="o">.</span><span class="n">generate_random_points</span><span class="p">(</span><span class="n">hull</span><span class="p">,</span> <span class="n">num_points</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_dist</span><span class="o">=</span><span class="mf">100.</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>TODO need to fix the examples so that they work with the sig_dig option.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -566,6 +886,7 @@
 <ul>
 <li><a class="reference internal" href="#">pycoverage.vorutils package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pycoverage.vorutils.playground">pycoverage.vorutils.playground module</a></li>
 <li><a class="reference internal" href="#module-pycoverage.vorutils.pyvoro">pycoverage.vorutils.pyvoro module</a></li>
 <li><a class="reference internal" href="#module-pycoverage.vorutils">Module contents</a></li>
 </ul>

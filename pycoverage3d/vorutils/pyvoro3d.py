@@ -120,7 +120,7 @@ def generate_random_points(chull, num_points, min_dist=0.0, random_seed=None):
     
     Parameters
     ----------
-    chull : SciPy ConvexHull
+    chull : scipy.spatial.ConvexHull instance
         Convex hull used for determining membership during rejection sampling.
     num_points : int
         Number of points to be generated.

@@ -132,6 +132,12 @@ class BasicSimulation:
                 polygon_region = shapely.geometry.Polygon(vertices).intersection(
                     self.operating_env
                 )
+
+                # Print the coordinates for some other use...
+                coords = polygon_region.exterior.xy
+                coords = [[coords[0][i], coords[1][i]] for i in range(len(coords[0]))]
+                print(coords)
+
                 min_x, min_y, max_x, max_y = polygon_region.bounds
 
                 # Compute the mass.

@@ -31,69 +31,72 @@ def warning_on_one_line(message, category, filename, lineno, file=None, line=Non
 warnings.formatwarning = warning_on_one_line
 
 
-def generate_random_points(poly, num_points, min_dist=1):
-    """ Uniformly generates random tuples of the form (x,y) which lie in the interior of a polygon, using rejection sampling. It is assumed that the polygon vertices are ordered in counter-clockwise order.
-
+def generate_random_points(poly, num_points, min_dist=0.0, sig_dig=4):
+    """
+    Generates random tuples of the form (x, y) which lie in the interior of a convex hull and are separated by ``min_dist`` distance, using rejection sampling. It is assumed that the hull vertices are ordered in counter-clockwise order.
+    
     Parameters
     ----------
-    poly : Shapely Polygon object
-        Polygon used for determining membership during rejection sampling.
+    poly : shapely.geometry.Polygon instance
+        Convex hull used for determining membership during rejection sampling.
     num_points : int
-        Number of points that should be generated.
-    min_dist : double, optional
-        The minimum separation distance enforced for each point, by default 1 unit. 
+        Number of points to be generated.
+    min_dist : float, optional
+        The minimum separation distance enforced for each point, by default 0.
+    sig_dig : int, optional
+        The number of significant digits to truncate the computational results, by default 4 significant digits.
 
     Returns
     -------
-    random_points : list of tuples
-        Unordered list of tuples in the form (x,y) representing the randomly sampled points, which lie within the polygon and are separated by a distance of min_dist. 
+    random_points : list
+        Unordered list of tuples of the form (x, y) representing the randomly sampled points which lie within the convex hull, and are separated by a distance of ``min_dist``. 
 
     Notes
     -----
-    This function does not compute the packing number, which is needed to determine if it is possible to generate num_points points that are separated within a distance of min_dist units. It is the responsibility of the user to ensure that the packing number corresponds to the expected result. 
+    This function does not compute the packing number, which is needed to determine if it is possible to generate ``num_points`` points that are separated by a distance of ``min_dist`` distance. It is the responsibility of the user to ensure that the problem is feasible.
 
-    It is assumed that the polygon vertices are ordered in counter-clockwise order.
-
+    It is assumed that the hull vertices are ordered in counter-clockwise order.
+    
     Examples
     --------
-    >>> # Generates 3 points with minimum separation distance of 1 unit.
-    >>> polygon = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
-    >>> random_points = pyvoro.generate_random_points(polygon, num_points=3, min_dist=1)
-    [[-75.10421685576651, 4.123350611217873],
-     [34.510299741753755, 5.890079171808779], 
-     [-74.30335320228306, -0.10772421319072123]]
+    >>> # Generates 3 points with ``min_dist`` of 1.
+    >>> hull = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
+    >>> random_points = geoutils.generate_random_points(hull, num_points=3, min_dist=1.)
 
-    >>> # FAIL CASE. User asks for unreasonable separation distance, result is an infinite runtime.
-    >>> polygon = Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
-    >>> random_points = pyvoro.generate_random_points(polygon, num_points=100, min_dist=100)
+    >>> # Fail case where the problem is not feasible. The result is an infinite runtime!
+    >>> hull = shapely.geometry.Polygon([[0, 100], [-95, 31], [-59, -81], [95, 31]])
+    >>> random_points = geoutils.generate_random_points(hull, num_points=100, min_dist=100.)
+    
+    TODO need to fix the examples so that they work with the sig_dig option.
+
     """
-
     min_x, min_y, max_x, max_y = poly.bounds
 
     x_random = list()
     y_random = list()
 
-    x_sample = np.random.uniform(min_x, max_x)
-    y_sample = np.random.uniform(min_y, max_y)
+    x_sample = np.around(np.random.uniform(min_x, max_x), sig_dig)
+    y_sample = np.around(np.random.uniform(min_y, max_y), sig_dig)
 
-    first_point_flag = False
+    first_point = False
 
-    while first_point_flag == False:
+    while first_point is False:
         if poly.contains(Point(x_sample, y_sample)):
             x_random.append(x_sample)
             y_random.append(y_sample)
-            first_point_flag = True
+            first_point = True
         else:
-            x_sample = np.random.uniform(min_x, max_x)
-            y_sample = np.random.uniform(min_y, max_y)
+            x_sample = np.around(np.random.uniform(min_x, max_x), sig_dig)
+            y_sample = np.around(np.random.uniform(min_y, max_y), sig_dig)
 
     while len(x_random) < num_points:
-        x_sample = np.random.uniform(min_x, max_x)
-        y_sample = np.random.uniform(min_y, max_y)
+        x_sample = np.around(np.random.uniform(min_x, max_x), sig_dig)
+        y_sample = np.around(np.random.uniform(min_y, max_y), sig_dig)
 
         if poly.contains(Point(x_sample, y_sample)):
-            distances = np.sqrt((x_sample - np.array(x_random)) ** 2) + np.sqrt(
-                (y_sample - np.array(y_random)) ** 2
+            distances = np.sqrt(
+                (x_sample - np.array(x_random)) ** 2
+                + (y_sample - np.array(y_random)) ** 2
             )
             min_distance = np.min(distances)
             if min_distance >= min_dist:
@@ -103,22 +106,23 @@ def generate_random_points(poly, num_points, min_dist=1):
             continue
 
     random_points = [[x_random[i], y_random[i]] for i in range(len(x_random))]
-    return random_points
+
+    return np.array(random_points)
 
 
 def generate_points_within_polygon(poly, num_points):
-    """ Uniformly generates random tuples of the form (x,y) which lie in the interior of a polygon.
+    """ Generates random tuples of the form (x,y) which lie in the interior of a polygon.
 
     Parameters
     ----------
-    poly : Shapely Polygon object
+    poly : shapely.geometry.Polygon instance
         Polygon used for determining membership.
     num_points : int
         Number of points to generate.
     
     Returns
     -------
-    random_points : list of tuples
+    random_points : list
         Unordered list of tuples in the form (x,y) representing the randomly sampled points, which lie within the polygon.
 
     Notes
@@ -157,21 +161,83 @@ def generate_points_within_polygon(poly, num_points):
     return random_points
 
 
+def compute_polygon_area(points, sig_dig=4):
+    """
+    Computes the area of a convex polygon defined by points using a shoelace formula.
+    
+    Parameters
+    ----------
+    points : numpy.ndarray instance
+        Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon. 
+    sig_dig : int, optional
+        The number of significant digits to truncate the computational results, by default 4 significant digits.
+
+    Returns
+    -------
+    area : float
+        Area of the convex polygon, defined by ``points``, truncated to ``sig_dig`` significant digits.
+
+    Examples
+    --------
+    >>> # TODO
+
+    """
+    x = points[:, 0]
+    y = points[:, 1]
+    area = 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
+    area = np.around(area, sig_dig)
+
+    return area
+
+
+def compute_polygon_centroid(points, sig_dig=4):
+    """
+    Computes the geometric centroid of the convex polygon, defined by ``points``, using a shoelace formula.
+    
+    Parameters
+    ----------
+    points : numpy.ndarray instance
+        Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.
+    sig_dig : int, optional
+        The number of significant digits to truncate the computational results, by default 4 significant digits.
+
+    Returns
+    -------
+    centroid : numpy.ndarray instance
+        Geometric centroid of the convex polygon, defined by ``points``, truncated to ``sig_dig`` significant digits.
+
+    Examples
+    --------
+    >>> # TODO
+    
+    """
+    x = points[:, 0]
+    y = points[:, 1]
+    area = compute_polygon_area(points, sig_dig)
+
+    centroid_x = np.dot((x + np.roll(x, 1)), (x * np.roll(y, 1) - np.roll(x, 1) * y))
+    centroid_y = np.dot((y + np.roll(y, 1)), (x * np.roll(y, 1) - np.roll(x, 1) * y))
+    centroid = (1 / (6 * area)) * np.array([centroid_x, centroid_y])
+    centroid = np.around(centroid, sig_dig)
+
+    return centroid
+
+
 def create_finite_voronoi_2d(vor, radius=None):
     """ Given an infinite Voronoi partition, creates a finite Voronoi partition in 2D by extending the infinite ridges and taking intersections of sets.
     
     Parameters
     ----------
-    vor : Scipy Voronoi object
+    vor : scipy.spatial.Voronoi instance
         Object containing information about the infinite Voronoi partition.
     radius : float, optional
         Float representing the distance to the "point at infinity", i.e. the point at which all the infinite ridges are extended to. If no radius is specified, we take the farthest point in the partition and multiply it by 100.
     
     Returns
     -------
-    regions : list of tuples
+    regions : list
         Indices of the vertices in the new finite Voronoi partition.
-    vertices : list of tuples
+    vertices : list
         List of coordinates, in (x,y), of the new finite Voronoi partition. These are the same coordinates returned by scipy.spatial.Voronoi() but the points at infinity are also appended to this list.
 
     Notes
@@ -267,16 +333,16 @@ def find_polygon_centroids(poly, points):
     
     Parameters
     ----------
-    poly : Shapely Polygon object
+    poly : shapely.geometry.Polygon
         Polygon used for determining intersection membership.
-    points : list of tuples
+    points : list
         List of tuples (x,y) representing the current positions of agents.
 
     Returns
     -------
-    vorinfo : list of list of tuples
+    vorinfo : list
         List containing the regions of the Voronoi partition, and the vertices of the convex hull for each region in the partition.
-    centroids : list of tuples
+    centroids : list
         List of tuples (x,y) representing the new centroid positions. 
 
     Notes 
@@ -329,14 +395,73 @@ def find_polygon_centroids(poly, points):
     return [regions, vertices], centroids
 
 
+def find_meb(points, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
+    """
+    Computes an approximation to the minimum enclosing ball that encloses the convex polygon defined by ``points``. 
+
+    The minimum enclosing ball is computed using the Frank-Wolfe algorithm (insert reference here) and iteratively converges to the minimum enclosing ball.
+    
+    Parameters
+    ----------
+    points : numpy.ndarray instance
+        Array containing tuples (x, y) representing coorddinates in 2-D of the points defining the convex polygon.
+    sig_dig : int, optional
+        The number of siginificant digits to truncate the computational ressults, by default 4 significant digits.
+    epsilon : float, optional
+        Parameter determining the acceptable error of the approximation and number of iterations, by default 1e-3.
+    stop_tol : float, optional
+        Stopping tolerance used for ending iterations early. 
+
+    Returns
+    -------
+    circle : numpy.ndarray instance
+        Array containing the coordinates (x, y, radius) that define the minimum enclosing ball.
+
+    Examples
+    --------
+    >>> # TODO
+
+    Notes
+    -----
+    Note that the smaller ``epsilon`` is, the more accurate the result. However, this also increases the number of iterations by a factor of two-fold, so choose this parameter wisely.
+
+    The parameter ``stop_tol`` is used to determine if the algorithm should be terminated early. If the absolute difference between the newly computed center and the previous center is smaller than ``stop_tol``, then the algorithm is terminated early.
+
+    """
+    # Use the centroid as the initial point.
+    center = compute_polygon_centroid(points, sig_dig)
+    radius = np.max(np.linalg.norm(center - points, axis=1))
+
+    # Determine the number of iterations.
+    num_iters = (int)(np.ceil(1 / epsilon ** 2))
+
+    # Iteratively compute the center of the minimum enclosing ball.
+    for k in range(num_iters):
+        print("Iteration {}".format(k))
+        prev_center = center.copy()
+
+        distances = np.linalg.norm(center - points, axis=1)
+        idx_max = np.argmax(distances)
+        center = (k / (k + 1)) * center + (1 / (k + 1)) * points[idx_max]
+        radius = distances[idx_max]
+
+        # if np.linalg.norm(center - prev_center) ** 2 < stop_tol:
+        #    print("Stopping condition satisfied, terminating algorithm...")
+        #    break
+
+    circle = np.array([center[0], center[1], radius])
+
+    return circle
+
+
 def create_triangulation(poly, points, scheme=None):
     """ Computes the triangulation of the convex hull using either the defualt scheme, or by choosing the centroid as the leverage point (delaunay).
     
     Parameters
     ----------
-    poly : Shapely Polygon object
+    poly : shapely.geometry.Polygon instance
         Polygon representing the domain to be triangulated.
-    points : list of tuples 
+    points : list
         List of points that form the convex hull. Asssumed to be in counter-clockwise order.
     scheme : string, optional
         String representing which scheme to use, by default None. If None, then the default scheme is used where the points that form the hull are used, and if "delaunay" then the points from the hull and the centroid of the polygon are used.
@@ -713,9 +838,9 @@ def compute_closest_point(poly, points):
     
     Parameters
     ----------
-    poly : Shapely Polygon object
+    poly : shapely.geometry.Polygon
         Polygon representing the domain of operation.
-    points : list of tuples
+    points : list
         List of current agent positions.
 
     Returns
@@ -763,14 +888,14 @@ def create_transparent_cmap(cmap, N=255):
     
     Parameters
     ----------
-    cmap : Matplotlib cmap object
+    cmap : matplotlib.pyplot.cmap instance
         Cmap object containing information about the colormap. 
     N : int, optional
         Value used in determining alpha, which determines the opacity of the transparent colormap, by default 255. The value of N should be between 0 and 255.
 
     Returns
     -------
-    transparent_cmap : Matplotlib cmap object
+    transparent_cmap : matplotlib.pyplot.cmap instance
         Cmap object containing information about the transparent colormap. 
 
     Examples
