@@ -57,7 +57,7 @@ def four_examples(vertices):
         # Plot the center.
         ax.scatter(circle[0], circle[1], s=3)
 
-        # Draw the enclosing circle
+        # Draw the enclosing circle.
         artist_circle = plt.Circle(
             (circle[0], circle[1]), circle[2], alpha=1, fill=False, linewidth=0.5
         )

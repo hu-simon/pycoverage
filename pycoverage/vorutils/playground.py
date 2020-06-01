@@ -1,6 +1,19 @@
 """
 Python playground file used for testing algorithm ideas.
 
+Things to implement so that we can create the entire coverage control algorithm.
+1. Function that approximates the hull using a bounding rectangular prism.
+2. Function that computes the projection of the points in the operating domain onto the plane determined by the RED agent.
+3. Function that plots the simulation data. 
+
+Steps in the simpler 3D algorithm.
+1. First, compute the projection onto the plane determined by the RED agent. 
+2. Compute the 2D Voronoi partition based on this projection.
+3. Obtain the new centroids (this gives you the coordinates in the xy-plane).
+4. Move the agents according to these centroids. For the control to apply, we should apply the control where you go straight up with the z-coordinate.
+
+(Also for Jack, create those 3D regions that he needs. Essentially, those 3D convex hulls.)
+
 """
 
 import os
@@ -9,6 +22,7 @@ import time
 
 import shapely
 import numpy as np
+import cvxpy as cvx
 from scipy.spatial import *
 from shapely.geometry import *
 import matplotlib.pyplot as plt
@@ -94,59 +108,59 @@ def generate_random_points(poly, num_points, min_dist=0.0, sig_dig=4):
     return np.array(random_points)
 
 
-def compute_polygon_area(points, sig_dig=4):
+def compute_polygon_area(vertices, sig_dig=4):
     """
-    Computes the area of a convex polygon defined by points using a shoelace formula.
+    Computes the area of a convex polygon defined by ``vertices`` using a shoelace formula.
     
     Parameters
     ----------
-    points : numpy.ndarray instance
-        Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon. 
+    vertices : numpy.ndarray instance
+        Array containing tuples (x, y) representing coordinates in 2-D of the vertices defining the convex polygon. 
     sig_dig : int, optional
         The number of significant digits to truncate the computational results, by default 4 significant digits.
 
     Returns
     -------
     area : float
-        Area of the convex polygon, defined by ``points``, truncated to ``sig_dig`` significant digits.
+        Area of the convex polygon, defined by ``vertices``, truncated to ``sig_dig`` significant digits.
 
     Examples
     --------
     >>> # TODO
 
     """
-    x = points[:, 0]
-    y = points[:, 1]
+    x = vertices[:, 0]
+    y = vertices[:, 1]
     area = 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
     area = np.around(area, sig_dig)
 
     return area
 
 
-def compute_polygon_centroid(points, sig_dig=4):
+def compute_polygon_centroid(vertices, sig_dig=4):
     """
-    Computes the geometric centroid of the convex polygon, defined by ``points``, using a shoelace formula.
+    Computes the geometric centroid of the convex polygon, defined by ``vertices``, using a shoelace formula.
     
     Parameters
     ----------
-    points : numpy.ndarray instance
-        Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.
+    vertices : numpy.ndarray instance
+        Array containing tuples (x, y) representing coordinates in 2-D of the vertices defining the convex polygon.
     sig_dig : int, optional
         The number of significant digits to truncate the computational results, by default 4 significant digits.
 
     Returns
     -------
     centroid : numpy.ndarray instance
-        Geometric centroid of the convex polygon, defined by ``points``, truncated to ``sig_dig`` significant digits.
+        Geometric centroid of the convex polygon, defined by ``vertices``, truncated to ``sig_dig`` significant digits.
 
     Examples
     --------
     >>> # TODO
     
     """
-    x = points[:, 0]
-    y = points[:, 1]
-    area = compute_polygon_area(points, sig_dig)
+    x = vertices[:, 0]
+    y = vertices[:, 1]
+    area = compute_polygon_area(vertices, sig_dig)
 
     centroid_x = np.dot((x + np.roll(x, 1)), (x * np.roll(y, 1) - np.roll(x, 1) * y))
     centroid_y = np.dot((y + np.roll(y, 1)), (x * np.roll(y, 1) - np.roll(x, 1) * y))
@@ -156,16 +170,16 @@ def compute_polygon_centroid(points, sig_dig=4):
     return centroid
 
 
-def compute_enclosing_circle(points, sig_dig=4):
+def compute_enclosing_circle(vertices, sig_dig=4):
     """
     Computes the smallest enclosing circle that contains the convex polygon.
     
-    This is computed by finding the geometric center of the polygon and then finding the largest distance between the centroid and ``points``.
+    This is computed by finding the geometric center of the polygon and then finding the largest distance between the centroid and ``vertices``.
 
     Parameters
     ----------
-    points : numpy.ndarray instance
-        Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.
+    vertices : numpy.ndarray instance
+        Array containing tuples (x, y) representing coordinates in 2-D of the vertices defining the convex polygon.
     sig_dig : int, optional
         The number of siginificant digits to truncate the computational results, by default 4 significant digits.
 
@@ -179,22 +193,22 @@ def compute_enclosing_circle(points, sig_dig=4):
     >>> # TODO
 
     """
-    centroid = compute_polygon_centroid(points, sig_dig)
-    distances = np.linalg.norm(centroid - points, axis=1)
+    centroid = compute_polygon_centroid(vertices, sig_dig)
+    distances = np.linalg.norm(centroid - vertices, axis=1)
     radius = np.max(distances)
     circle = np.array([centroid[0], centroid[1], radius])
 
     return circle
 
 
-def compute_circles(points, sig_dig=4):
+def compute_circles(vertices, sig_dig=4):
     """
     Computes the distances from the centroid to the vertices of the convex polygon and returns circles whose radius are the distances.
     
     Parameters
     ----------
-    points : numpy.ndarray instance
-        Array containing tuples (x, y) representing coordinates in 2-D of the points defining the convex polygon.
+    vertices : numpy.ndarray instance
+        Array containing tuples (x, y) representing coordinates in 2-D of the vertices defining the convex polygon.
     sig_dig : int, optional
         The number of significant digits to truncate the computational results, by default 4 significant digits.
 
@@ -208,8 +222,8 @@ def compute_circles(points, sig_dig=4):
     >>> # TODO
 
     """
-    centroid = compute_polygon_centroid(points, sig_dig)
-    distances = np.sort(np.linalg.norm(centroid - points, axis=1))
+    centroid = compute_polygon_centroid(vertices, sig_dig)
+    distances = np.sort(np.linalg.norm(centroid - vertices, axis=1))
     circles = np.array(
         [[centroid[0], centroid[1], distances[i]] for i in range(len(distances))]
     )
@@ -319,18 +333,18 @@ def plot_all_circles(poly, circles):
     return fig, ax
 
 
-def find_meb(points, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
+def find_meb(vertices, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
     """
-    Computes an approximation to the minimum enclosing ball that encloses the convex polygon defined by ``points``. 
+    Computes an approximation to the minimum enclosing ball that encloses the convex polygon defined by ``vertices``. 
 
     The minimum enclosing ball is computed using the Frank-Wolfe algorithm (insert reference here) and iteratively converges to the minimum enclosing ball.
     
     Parameters
     ----------
-    points : numpy.ndarray instance
-        Array containing tuples (x, y) representing coorddinates in 2-D of the points defining the convex polygon.
+    vertices : numpy.ndarray instance
+        Array containing tuples (x, y) representing coordinates in 2-D of the vertices defining the convex polygon.
     sig_dig : int, optional
-        The number of siginificant digits to truncate the computational ressults, by default 4 significant digits.
+        The number of siginificant digits to truncate the computational results, by default 4 significant digits.
     epsilon : float, optional
         Parameter determining the acceptable error of the approximation and number of iterations, by default 1e-3.
     stop_tol : float, optional
@@ -353,8 +367,8 @@ def find_meb(points, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
 
     """
     # Use the centroid as the initial point.
-    center = compute_polygon_centroid(points, sig_dig)
-    radius = np.max(np.linalg.norm(center - points, axis=1))
+    center = compute_polygon_centroid(vertices, sig_dig)
+    radius = np.max(np.linalg.norm(center - vertices, axis=1))
 
     # Determine the number of iterations.
     num_iters = (int)(np.ceil(1 / epsilon ** 2))
@@ -364,9 +378,9 @@ def find_meb(points, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
         print("Iteration {}".format(k))
         prev_center = center.copy()
 
-        distances = np.linalg.norm(center - points, axis=1)
+        distances = np.linalg.norm(center - vertices, axis=1)
         idx_max = np.argmax(distances)
-        center = (k / (k + 1)) * center + (1 / (k + 1)) * points[idx_max]
+        center = (k / (k + 1)) * center + (1 / (k + 1)) * vertices[idx_max]
         radius = distances[idx_max]
 
         # if np.linalg.norm(center - prev_center) ** 2 < stop_tol:
@@ -376,3 +390,104 @@ def find_meb(points, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
     circle = np.array([center[0], center[1], radius])
 
     return circle
+
+
+def project_to_hull(vertices, point, sig_digs=4):
+    """
+    Projects a point onto the boundary of the convex hull.
+
+    Parameters
+    ----------
+    vertices : numpy.ndarray
+        Array containing tuples (x, y) representing coordinates in 2-D of the vertices defining the convex polygon.
+    point : numpy.ndarray
+        Array containing tuple (x, y) representing coordinates in 2-D of the point we want to project onto the convex polygon.
+    sig_digs : float, optional
+        The number of significant digits to truncate the computatioanl results, by default 4 siginificant digits.
+
+    Returns
+    -------
+    proj_point : list
+        List containing tuple (x, y) representing the coordinates in 2-D of the projection of ``point`` onto the convex polygon defined by ``vertices``, and the distance between the point and the projection.
+    
+    Examples
+    --------
+    >>> # TODO
+
+    Notes
+    -----
+    It is assumed that ``point`` represents a point that is outside the convex polygon.
+    
+    """
+    weights = cvx.Variable(vertices.shape[0])
+
+    obj = cvx.Minimize(cvx.sum_squares(weights @ vertices - point))
+    constr = [weights >= 0, cvx.sum(weights) == 1]
+    prob = cvx.Problem(obj, constr)
+
+    value = prob.solve()
+    proj_point = [
+        np.around(weights.value @ vertices, sig_digs),
+        np.around(value, sig_digs),
+    ]
+
+    return proj_point
+
+
+def plot_projections(poly, points, projs):
+    """
+    Plots the convex polygon, projection points and points outside the convex polygon.
+    
+    Parameters
+    ----------
+    poly : shapely.geometry.Polygon instance
+        The convex polygon representing the operating environment.
+    points : numpy.ndarray
+        Array containing the (x, y) coordinates of the points outside the convex polygon.
+    projs : numpy.ndarray
+        Array containing the (x, y) coordinates of the projection of the ``points`` onto ``poly``. 
+    
+    Returns
+    -------
+    None
+
+    Examples
+    --------
+    >>> # TODO
+
+    Notes
+    -----
+
+    """
+    fig, ax = plt.subplots(figsize=((1680 / 2) / 192, (1000 / 2) / 192), dpi=192)
+
+    # Remove the spines.
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+    # Remove the x and y ticks.
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    # Plot the original polygon.
+    ax.plot(*(poly.exterior.xy), linewidth=0.5, color="k")
+
+    # Plot the points and their projections.
+    for idx, point in enumerate(points):
+        # Plot the point outside the convex polygon.
+        ax.scatter(point[0], point[1], s=3, color="k")
+
+        # Plot the projection of this point.
+        ax.scatter(projs[idx][0][0], projs[idx][0][1], s=3, color="k")
+
+        # Draw the line between them.
+        ax.plot(
+            [point[0], projs[idx][0][0]],
+            [point[1], projs[idx][0][1]],
+            "k--",
+            linewidth=0.5,
+        )
+
+    ax.set_aspect("equal", adjustable="box")
+
+    return fig, ax

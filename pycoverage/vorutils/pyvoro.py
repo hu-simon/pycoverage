@@ -127,6 +127,8 @@ def generate_points_within_polygon(poly, num_points):
 
     Notes
     -----
+    Further support for this function is DEPRECATED. Please use ``generate_random_points()`` instead.
+    
     This function has the same functionality as generate_random_points(), as min_dist=0 is enforced. Additionally, this function is much faster than generate_random_points() even with min_dist=0 as an argument since no check is performed on separation distance. 
     
     This function does not compute the packing number, which is needed to determine if it is possible to generate num_points points. It is up to the user to ensure this is enforced before passing arguments onto this function.
@@ -142,6 +144,9 @@ def generate_points_within_polygon(poly, num_points):
      [13.908619808266579, 58.8310992632654],
      [49.05513248457106, 10.135106966482866]]
 
+    See Also
+    --------
+    generate_random_points
     """
 
     random_points = list()
@@ -377,6 +382,8 @@ def find_polygon_centroids(poly, points):
     See Also
     --------
     pyvoro.create_finite_voronoi_2d : subprocedure
+
+    TODO need to fix the examples so that they work with sig_dig option.
     """
     vor = Voronoi(points)
     regions, vertices = create_finite_voronoi_2d(vor)
@@ -395,7 +402,7 @@ def find_polygon_centroids(poly, points):
     return [regions, vertices], centroids
 
 
-def find_meb(points, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
+def find_enclosing_ball(points, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
     """
     Computes an approximation to the minimum enclosing ball that encloses the convex polygon defined by ``points``. 
 
@@ -452,6 +459,48 @@ def find_meb(points, sig_dig=4, epsilon=1e-2, stop_tol=1e-2):
     circle = np.array([center[0], center[1], radius])
 
     return circle
+
+
+def project_to_hull(vertices, point, sig_digs=4):
+    """
+    Projects a point onto the boundary of the convex hull.
+
+    Parameters
+    ----------
+    vertices : numpy.ndarray
+        Array containing tuples (x, y) representing coordinates in 2-D of the vertices defining the convex polygon.
+    point : numpy.ndarray
+        Array containing tuple (x, y) representing coordinates in 2-D of the point we want to project onto the convex polygon.
+    sig_digs : float, optional
+        The number of significant digits to truncate the computatioanl results, by default 4 siginificant digits.
+
+    Returns
+    -------
+    proj_point : list
+        List containing tuple (x, y) representing the coordinates in 2-D of the projection of ``point`` onto the convex polygon defined by ``vertices``, and the distance between the point and the projection.
+    
+    Examples
+    --------
+    >>> # TODO
+
+    Notes
+    -----
+    It is assumed that ``point`` represents a point that is outside the convex polygon.
+    
+    """
+    weights = cvx.Variable(vertices.shape[0])
+
+    obj = cvx.Minimize(cvx.sum_squares(weights @ vertices - point))
+    constr = [weights >= 0, cvx.sum(weights) == 1]
+    prob = cvx.Problem(obj, constr)
+
+    value = prob.solve()
+    proj_point = [
+        np.around(weights.value @ vertices, sig_digs),
+        np.around(value, sig_digs),
+    ]
+
+    return proj_point
 
 
 def create_triangulation(poly, points, scheme=None):
