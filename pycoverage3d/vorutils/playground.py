@@ -24,8 +24,8 @@ import time
 
 import shapely
 import numpy as np
-from scipy.spatial import *
-from shapely.geometry import *
+import scipy.spatial
+import shapely.geometry
 import scipy.integrate as scint
 import matplotlib.pyplot as plt
 from pycoverage.vorutils import pyvoro
@@ -35,7 +35,7 @@ from pycoverage3d.vorutils import pyvoro3d
 def regularize_environment(vertices, sig_dig=4, create_polygon=False):
     """
     Expands the environment by creating a new environment created from the bounding box of the original convex polygon.
-    
+
     Parameters
     ----------
     vertices : numpy.ndarray instance
@@ -63,15 +63,16 @@ def regularize_environment(vertices, sig_dig=4, create_polygon=False):
     --------
 
     """
-    poly = shapely.geometry.Polygon(vertices)
-    min_x, min_y, max_x, max_y = poly.bounds
-    return None, None
+    # poly = shapely.geometry.Polygon(vertices)
+    # min_x, min_y, max_x, max_y = poly.bounds
+    # return None, None
+    pass
 
 
 def project_2d(blue_pos, red_pos, sig_dig=4):
     """
     Projects coordinates in ``blue_pos`` to the plane determined by ``red_pos``, and returns the projections as well as the length of the projection vector.
-    
+
     Parameters
     ----------
     blue_pos : numpy.ndarray instance
@@ -80,7 +81,7 @@ def project_2d(blue_pos, red_pos, sig_dig=4):
         Array containing the 3-D coordinates of the RED agents.
     sig_dig : int, optional
         The number of significant digits to truncate the computational results, by default 4 siginificant digits.
-    
+
     Returns
     -------
     proj_blue : numpy.ndarray instance
@@ -113,7 +114,7 @@ def project_2d(blue_pos, red_pos, sig_dig=4):
 def compute_projected_voronoi(poly, proj_blue, sig_dig=4):
     """
     Computes the 2-D Voronoi partition using the points in ``proj_blue`` and the geometric information in ``poly``. 
-    
+
     Parameters
     ----------
     poly : shapely.geometry.Polygon instance
@@ -147,13 +148,13 @@ def compute_projected_voronoi(poly, proj_blue, sig_dig=4):
     # Compute the finite regions.
     vor_regions, vor_vertices = pyvoro.create_finite_voronoi_2d(vor_partition)
 
-    return regions, vertices
+    return vor_regions, vor_vertices
 
 
 def gaussian_function(pos, mu, sigma, scale=1.0, sig_dig=4):
     """
     Returns the value of the Gaussian function with mean ``mu``, variance ``sigma``, and scaling factor ``scale``.
-    
+
     Parameters
     ----------
     pos : numpy.ndarray instance
@@ -171,7 +172,7 @@ def gaussian_function(pos, mu, sigma, scale=1.0, sig_dig=4):
     -------
     val : float
         The value of the Gaussian function with mean ``mu``, variance ``sigma``, and scaling factor ``scale``.
-    
+
     Notes
     -----
     Note that due to the scaling factor ``scale``, this does not return a proper probability distribution (i.e. the range of this function is not in [0,1]) so please take note of this. The scaling factor is used to ensure that there are no numerical accuracy issues.
@@ -183,8 +184,9 @@ def gaussian_function(pos, mu, sigma, scale=1.0, sig_dig=4):
     --------
 
     """
-    dim = mu.shape[1]
-    inv_sigma_mat = np.around(np.diag(1.0 / sigma), sig_dig)
+    dim = mu.shape[0]
+    # inv_sigma_mat = np.around(np.diag(1.0 / sigma), sig_dig)
+    inv_sigma_mat = np.around(1.0 / sigma, sig_dig)
     normal_factor = np.around(1 / np.sqrt((2 * np.pi) ** dim * np.prod(sigma)), sig_dig)
     val = np.around(
         normal_factor
@@ -199,7 +201,7 @@ def dgaussian_function(pos, mu, sigma, step_size, scale=1.0, sig_dig=4):
     Returns the estimate of the derivative of the Gaussian function, parameterized by mean ``mu`, variance ``sigma``, and scaling factor ``scale``.
 
     The estimation is performed using finite difference methods.
-    
+
     Parameters
     ----------
     pos : numpy.ndarray instance
@@ -219,7 +221,7 @@ def dgaussian_function(pos, mu, sigma, step_size, scale=1.0, sig_dig=4):
     -------
     val : float
         The estimate of the time-derivative of the Gaussian function, parametrized by mean ``mu``, variance ``sigma``, and scaling factor ``scale``, which is computed using finite differences.
-    
+
     Notes
     -----
     Note that due to the scaling factor ``scale``, this does not return a proper probability distribution (i.e. the range of this function is not in [0,1]) so please take note of this. The scaling factor is used to ensure that there are no numerical accuracy issues.
@@ -232,7 +234,7 @@ def dgaussian_function(pos, mu, sigma, step_size, scale=1.0, sig_dig=4):
     See Also
     --------
     pycoverage3d.vorutils.pyvoro3d.gaussian_function : subroutine
-    
+
     """
     val = gaussian_function(
         pos, mu[1, :], sigma[1, :], scale=scale, sig_dig=sig_dig
@@ -243,7 +245,7 @@ def dgaussian_function(pos, mu, sigma, step_size, scale=1.0, sig_dig=4):
 def tracking_gaussian(pos, mu, sigma, scale=1.0, sig_dig=4):
     """
     Returns the value of the weighted Gaussian function, parametrized by mean ``mu``, variance ``sigma`` and scaling factor ``scale``. 
-    
+
     Parameters
     ----------
     pos : numpy.ndarray instance
@@ -280,7 +282,7 @@ def tracking_gaussian(pos, mu, sigma, scale=1.0, sig_dig=4):
 def dtracking_function(pos, mu, sigma, scale=1.0, sig_dig=4):
     """
     Returns the estimate of the derivative of the weighted Gaussian function, parametrized by mean ``mu``, variance ``sigma``, and scaling factor ``scale``.
-    
+
     Parameters
     ----------
     pos : numpy.ndarray instance
@@ -319,6 +321,55 @@ def dtracking_function(pos, mu, sigma, scale=1.0, sig_dig=4):
     return np.around(val, sig_dig)
 
 
+def joint_xyt(x, y, mu_x, mu_y, sigma_x, sigma_y):
+    norm_term = 1 / (2 * np.pi * sigma_x * sigma_y)
+    exp_term = np.exp(
+        -0.5 * (((x - mu_x) ** 2 / sigma_x) + ((y - mu_y) ** 2 / sigma_y))
+    )
+
+    return np.around(norm_term * exp_term, sig_dig)
+
+
+def joint_xt(x, mu_x, sigma_x, scale=1.0, sig_dig=4):
+    norm_term = scale * (1 / (np.sqrt(2 * np.pi) * sigma_x))
+    exp_term = np.exp(-0.5 * (x - mu_x) ** 2 / sigma_x ** 2)
+
+    return np.around(norm_term * exp_term, sig_dig)
+
+
+def weighted_xt(x, mu_x, sigma_x, scale=1.0, sig_dig=4):
+    return np.around(
+        scale * (x * joint_xt(x, mu_x, sigma_x, scale=scale, sig_dig=sig_dig)), sig_dig
+    )
+
+
+def djoint_xt(x, mu1, mu2, sigma1, sigma2, h, scale=1.0, sig_dig=4):
+    return np.around(
+        scale
+        * (
+            joint_xt(x, mu1, sigma1, scale=scale, sig_dig=sig_dig)
+            + joint_xt(x, mu2, sigma2, scale=scale, sig_dig=sig_dig)
+        )
+        / h,
+        sig_dig,
+    )
+
+
+def dweighted_xt(x, mu1, mu2, sigma1, sigma2, h, scale=1.0, sig_dig=4):
+    return np.around(
+        scale
+        * x
+        * (
+            (
+                weighted_xt(x, mu1, sigma1, scale=scale, sig_dig=sig_dig)
+                + weighted_xt(x, mu2, sigma2, scale=scale, sig_dig=sig_dig)
+            )
+            / h
+        ),
+        sig_dig,
+    )
+
+
 def compute_centroids_2d_single_step(
     vor_cell,
     vorinfo,
@@ -332,7 +383,7 @@ def compute_centroids_2d_single_step(
 ):
     """
     Computes the new centroid for coverage control, using the 2-D projected Voronoi partition using information about the BLUE and RED positions.
-    
+
     Parameters
     ----------
     vor_cell : shapely.geometry.Polygon instance
@@ -380,66 +431,84 @@ def compute_centroids_2d_single_step(
 
     # Compute the mass.
     mass_x, _ = scint.quad(
-        gaussian_function,
-        min_x,
-        max_x,
-        args=(proj_red[0, :][0], sigma[0, :][0], scale, sig_dig),
+        joint_xt, min_x, max_x, args=(proj_red[0, :][0], sigma[0, :][0], scale, sig_dig)
     )
     mass_y, _ = scint.quad(
-        gaussian_function,
-        min_y,
-        max_y,
-        args=(proj_red[0, :][1], sigma[0, :][1], scale, sig_dig),
+        joint_xt, min_y, max_y, args=(proj_red[0, :][1], sigma[0, :][1], scale, sig_dig)
     )
 
     # Compute the derivative of the mass.
     dmass_x, _ = scint.quad(
-        dgaussian_function,
+        djoint_xt,
         min_x,
         max_x,
-        args=(proj_red, sigma, step_size, scale, sig_dig),
+        args=(
+            proj_red[0, :][0],
+            proj_red[1, :][0],
+            sigma[0, :][0],
+            sigma[1, :][0],
+            step_size,
+        ),
     )
     dmass_y, _ = scint.quad(
-        dgaussian_function,
+        djoint_xt,
         min_y,
         max_y,
-        args=(proj_red, sigma, step_size, scale, sig_dig),
+        args=(
+            proj_red[0, :][1],
+            proj_red[1, :][1],
+            sigma[0, :][1],
+            sigma[1, :][1],
+            step_size,
+        ),
     )
 
-    # Compute the new center of mass.
+    # Compute the new center of  mass.
     cent_x, _ = scint.quad(
-        tracking_gaussian,
-        min_x,
-        max_x,
-        args=(proj_red[0, :][0], sigma[0, :][0], scale, sig_dig),
+        weighted_xt, min_x, max_x, args=(proj_red[0, :][0], sigma[0, :][0])
     )
     cent_y, _ = scint.quad(
-        tracking_gaussian,
-        min_y,
-        max_y,
-        args=(proj_red[0, :][1], sigma[0, :][1], scale, sig_dig),
+        weighted_xt, min_y, max_y, args=(proj_red[0, :][1], sigma[0, :][1])
     )
+
     cent_x = cent_x / mass_x
     cent_y = cent_y / mass_y
 
-    # Compute the derivative of the centers of mass.
+    # Compute the derivative of the center of mass.
     dcent_x, _ = scint.quad(
-        dtracking_function,
+        dweighted_xt,
         min_x,
         max_x,
-        args=(proj_red, sigma, step_size, scale, sig_dig),
+        args=(
+            proj_red[0, :][0],
+            proj_red[1, :][0],
+            sigma[0, :][0],
+            sigma[1, :][0],
+            step_size,
+            scale,
+            sig_dig,
+        ),
     )
     dcent_y, _ = scint.quad(
-        dtracking_function,
+        dweighted_xt,
         min_y,
         max_y,
-        args=(proj_red, sigma, step_size, scale, sig_dig),
+        args=(
+            proj_red[0, :][1],
+            proj_red[1, :][1],
+            sigma[0, :][1],
+            sigma[1, :][1],
+            step_size,
+            scale,
+            sig_dig,
+        ),
     )
+
     dcent_x = (dcent_x - mass_x * cent_x) / mass_x
     dcent_y = (dcent_y - mass_y * cent_y) / mass_y
 
     # Compute the closest point information, used to compute the new centroid positions.
-    closest_point, _ = pyvoro.compute_closest_point(vor_cell, proj_blue)
+    closest_point, idx = pyvoro.compute_closest_point(vor_cell, proj_blue)
 
     # Compute the gradient direction.
     dclosest_point = np.zeros(len(closest_point))
@@ -462,4 +531,4 @@ def compute_centroids_2d_single_step(
     )
     proj_centroid = np.around(np.array([new_x, new_y]), sig_dig)
 
-    return proj_centroid
+    return proj_centroid, closest_point, idx

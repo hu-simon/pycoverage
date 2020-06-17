@@ -1,0 +1,116 @@
+\documentclass{article}
+\usepackage{ps}
+\usepackage{comment}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{etoolbox}
+\AtBeginEnvironment{algorithm}{%
+	\setlength{\columnwidth}{\linewidth}%
+}
+
+% Glossary entries.
+\renewcommand*{\arraystretch}{1}% default is 1
+\newcommand{\glsdescwidth}{13cm}
+\usepackage[sort=standard,savewrites, nonumberlist, seeautonumberlist]{glossaries}
+\newglossary[slg]{symbolslist}{syi}{syg}{List of Symbols}
+\newglossarystyle{mystyle}{%
+	\glossarystyle{long}%
+	\renewenvironment{theglossary}%
+	{\begin{longtable}{p{3cm}p{\glsdescwidth}}}%
+		{\end{longtable}}%
+}
+\makeglossaries
+
+% New glossary entries.
+\newglossaryentry{symb:Xi}{name=\ensuremath{\Xi},
+	description={Domain of operation. Assumed to be a subset of $\R^n$, and is compact and convex},
+	sort={b},
+	type=symbolslist}
+\newglossaryentry{symb:xi}{name=\ensuremath{\xi},
+	description={Variable used to represent a member of $\Xi$. Also a spatial integration variable},
+	sort={c},
+	type=symbolslist}
+\newglossaryentry{symb:t}{name=\ensuremath{t},
+	description={Variable used to represent time and is assumed to be in $\R^+$. Also a temporal integration variable},
+	sort={d},
+	type=symbolslist}
+\newglossaryentry{symb:phi}{name=\ensuremath{\varphi},
+	description={Function that encodes the area(s) where we want effective coverage. Assumed to be integrable in the Lesbegue sense},
+	sort={e},
+	type=symbolslist}
+\newglossaryentry{p}{name=\ensuremath{p},
+	description={Vector containing position of Agents. $p = (p_1, p_2, \dots, p_n)$},
+	sort={f},
+	type=symbolslist}
+\newglossaryentry{N}{name=\ensuremath{N},
+	description={Number of BLUE Agents},
+	sort={a},
+	type=symbolslist}
+\newglossaryentry{XiN}{name=\ensuremath{\Xi^N},
+	description={$N$-th dimensional Cartesian product of $\Xi$},
+	sort={g},
+	type=symbolslist}
+\newglossaryentry{Vori}{name=\ensuremath{\V(\Xi, p)},
+	description={Voronoi partition of $\Xi$ given $p$},
+	sort={h},
+	type=symbolslist}
+\newglossaryentry{voricell}{name=\ensuremath{\V_i},
+	description={$i$-th Voronoi cell},
+	sort={i},
+	type=symbolslist}
+\newglossaryentry{delta}{name=\ensuremath{\delta},
+	description={Some measure of the distance between a RED Agent and a BLUE Agent},
+	sort={j},
+	type=symbolslist}
+\newglossaryentry{mi}{name=\ensuremath{M_i},
+	description={Mass of $i$-th Voronoi cell},
+	sort={k},
+	type=symbolslist}
+\newglossaryentry{ci}{name=\ensuremath{C_i},
+	description={Center of mass of $i$-th Voronoi cell},
+	sort={l},
+	type=symbolslist}
+
+\DeclareMathOperator{\bxi}{\boldsymbol{\xi}}
+
+% TItle information
+\title{\bf\Large Coverage Control Overview}
+\author{\bf Simon Hu}
+\date{}
+
+\begin{document}
+
+\maketitle 
+\glsaddall
+\printglossary[style=mystyle, type=symbolslist]
+\newpage
+
+\section{Coverage Control Overview}
+\subsection{Background}
+Let $\bp = (p_1, p_2, \dots, p_N) \in \R^N$ be a vector whose elements are the positions of the $i$-th agent, given by $p_i \in \R^d$ where $d=1, 2, \dots$. The goal of the coverage control algorithm is to solve the following problem.
+\begin{equation}
+	\label{eq:problem statement}
+	\displaystyle \max\limits_{\bp \in \Xi^N}{\mathcal{H}_{\varphi}(\bp, t)} := \max\limits_{\bp \in \Xi^N}{\int_{\Xi}{\min\limits_{i=1, 2, \dots, N}{\norm{\bxi - \bp_i}^2_2} \: \varphi(\bxi, t) \: \dif \bxi}}
+\end{equation}
+In other words, the goal is to find the optimal configuration of agent positions $\bp$ so that the desired area to cover, which is encoded in $\varphi : \R^N \times \R^+ \to \R$, is covered by all agents, which ensuring that agents are assigned an area, which is encoded in $\norm{\bxi - \bp}_2^2$, that is maximal with respect to $\Xi$. 
+
+The Voronoi partition $\mathcal{V} \equiv \mathcal{V}(\Xi, \bp)$ of $\Xi$ given the current agent positions $\bp$ is a set $\mathcal{V} = \left\{ \mathcal{V}_1, \mathcal{V}_2, \dots, \mathcal{V}_N \right\}$. Here, each cell $\mathcal{V}_i$ is given by 
+\begin{equation*}
+	\displaystyle \mathcal{V}_i = \left\{ \xi \: | \: \norm{\xi - p_i}^2_2 \leq \norm{\xi - p_j}^2_2 \: \forall \: i \neq j, \: \forall \: j = 1, 2, \dots, n \right\}.
+\end{equation*}
+An example of a Voronoi partition is shown in Figure (insert figure reference here). Using the definition of a Voronoi partition, we can rewrite (\ref{eq:problem statement}) as 
+\begin{equation}
+	\label{eq:rewritten coverage control}
+	\displaystyle \max\limits_{\bp \in \Xi^N}{\mathcal{H}_{\varphi}(\bp, t)} := \max\limits_{p \in \Xi^N}\sum\limits_{i=1}^{N}{\int_{\mathcal{V}_i}{\norm{\bxi - \bp_i}^2_2 \varphi(\bxi, t)\: \dif \bxi}}.
+\end{equation}
+In other words, the problem reduces to finding the configuration of agents so that effective coverage is maintained, but each agent is also assigned an area (i.e. a cell) that it is responsible for. There are two advantages of using the Voronoi partitions. First, the $\min$ term inside the integral is removed by the construction of the Voronoi cells. Second, any algorithm that uses these partitions will be \textit{distributed}, which means agents only need to use information from its Voronoi neighbors, defined by agents that share a cell boundary (i.e. agents $i$ and $j$ are neighbors if and only if $\partial \mathcal{V}_i \cap \partial \mathcal{V}_j \neq \emptyset$), so that communications between agents can be reduced. 
+
+The mass $M_i$ and centroid $C_i$ of the $i$-th cell is given by 
+\begin{equation}
+	\label{eq:mass, center of mass}
+	\displaystyle M_i = \int_{\mathcal{V}_i}{\varphi(\bxi, t)\: \dif \bxi}, \:\:\:\: C_i = \frac{1}{M_i}\int_{\mathcal{V}_i}{\bxi \varphi(\bxi, t) \: \dif \bxi}.
+\end{equation}
+To solve the maximization problem, agents move towards the centroid of their Voronoi cell \cite{Cortes:2004}. Intuitively, the agents move towards the area they need to cover since the $\varphi$ acts as an attracting force that draws the center of mass towards the desired coverage area. Algorithm (insert algorithm reference here) describes one step of the coverage control algorithm. 
+\subsection{Approach}
+For the purpose of this project, we consider $d = 3$, i.e. 3-D Euclidean space. Though orientation information about the robot may be present, so that $d \neq 3$, we only use the position information as our output is waypoints the agents should travel to.
+\end{document}
