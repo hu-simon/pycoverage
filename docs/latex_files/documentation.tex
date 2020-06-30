@@ -92,25 +92,110 @@ Let $\bp = (p_1, p_2, \dots, p_N) \in \R^N$ be a vector whose elements are the p
 	\label{eq:problem statement}
 	\displaystyle \max\limits_{\bp \in \Xi^N}{\mathcal{H}_{\varphi}(\bp, t)} := \max\limits_{\bp \in \Xi^N}{\int_{\Xi}{\min\limits_{i=1, 2, \dots, N}{\norm{\bxi - \bp_i}^2_2} \: \varphi(\bxi, t) \: \dif \bxi}}
 \end{equation}
-In other words, the goal is to find the optimal configuration of agent positions $\bp$ so that the desired area to cover, which is encoded in $\varphi : \R^N \times \R^+ \to \R$, is covered by all agents, which ensuring that agents are assigned an area, which is encoded in $\norm{\bxi - \bp}_2^2$, that is maximal with respect to $\Xi$. 
+In other words, the goal is to find the optimal configuration of agent positions $\bp$ so that the desired area to cover, which is encoded in $\varphi : \R^N \times \R^+ \to \R$, is covered by all agents, which ensuring that agents are assigned an area, which is encoded in $\norm{\bxi - \bp}_2^2$, that is maximal with respect to $\Xi$. We will discuss how this $\varphi$ fits in with the tracking framework, but for now note that it is just a regular old function.
 
 The Voronoi partition $\mathcal{V} \equiv \mathcal{V}(\Xi, \bp)$ of $\Xi$ given the current agent positions $\bp$ is a set $\mathcal{V} = \left\{ \mathcal{V}_1, \mathcal{V}_2, \dots, \mathcal{V}_N \right\}$. Here, each cell $\mathcal{V}_i$ is given by 
 \begin{equation*}
 	\displaystyle \mathcal{V}_i = \left\{ \xi \: | \: \norm{\xi - p_i}^2_2 \leq \norm{\xi - p_j}^2_2 \: \forall \: i \neq j, \: \forall \: j = 1, 2, \dots, n \right\}.
 \end{equation*}
-An example of a Voronoi partition is shown in Figure (insert figure reference here). Using the definition of a Voronoi partition, we can rewrite (\ref{eq:problem statement}) as 
+An example of a Voronoi partition is shown in Figure \ref{fig:voronoipartition}. Using the definition of a Voronoi partition, we can rewrite (\ref{eq:problem statement}) as 
 \begin{equation}
 	\label{eq:rewritten coverage control}
 	\displaystyle \max\limits_{\bp \in \Xi^N}{\mathcal{H}_{\varphi}(\bp, t)} := \max\limits_{p \in \Xi^N}\sum\limits_{i=1}^{N}{\int_{\mathcal{V}_i}{\norm{\bxi - \bp_i}^2_2 \varphi(\bxi, t)\: \dif \bxi}}.
 \end{equation}
-In other words, the problem reduces to finding the configuration of agents so that effective coverage is maintained, but each agent is also assigned an area (i.e. a cell) that it is responsible for. There are two advantages of using the Voronoi partitions. First, the $\min$ term inside the integral is removed by the construction of the Voronoi cells. Second, any algorithm that uses these partitions will be \textit{distributed}, which means agents only need to use information from its Voronoi neighbors, defined by agents that share a cell boundary (i.e. agents $i$ and $j$ are neighbors if and only if $\partial \mathcal{V}_i \cap \partial \mathcal{V}_j \neq \emptyset$), so that communications between agents can be reduced. 
+In other words, the problem reduces to finding the configuration of agents so that effective coverage is maintained, but each agent is also assigned an area (i.e. a cell) that it is responsible for. There are two advantages of using the Voronoi partitions. First, the $\min$ term inside the integral is removed by the construction of the Voronoi cells. Second, any algorithm that uses these partitions will be \textit{distributed}, which means agents only need to use information from its Voronoi neighbors, defined by agents that share a cell boundary (i.e. agents $i$ and $j$ are neighbors if and only if $\partial \mathcal{V}_i \cap \partial \mathcal{V}_j \neq \emptyset$), so that communications between agents can be reduced. However, for the purposes of this project, the algorithm that has been implemented should run on a \textit{centralized} computer and then information about the waypoints, should be shared with the agents through the centralized computer.
 
 The mass $M_i$ and centroid $C_i$ of the $i$-th cell is given by 
 \begin{equation}
 	\label{eq:mass, center of mass}
-	\displaystyle M_i = \int_{\mathcal{V}_i}{\varphi(\bxi, t)\: \dif \bxi}, \:\:\:\: C_i = \frac{1}{M_i}\int_{\mathcal{V}_i}{\bxi \varphi(\bxi, t) \: \dif \bxi}.
+	\displaystyle M_i = \int_{\mathcal{V}_i}{\varphi(\bxi, t)\: \dif \bxi}, \:\:\:\: C_i = \frac{1}{M_i}\int_{\mathcal{V}_i}{\bxi \cdot \varphi(\bxi, t) \: \dif \bxi}.
 \end{equation}
-To solve the maximization problem, agents move towards the centroid of their Voronoi cell \cite{Cortes:2004}. Intuitively, the agents move towards the area they need to cover since the $\varphi$ acts as an attracting force that draws the center of mass towards the desired coverage area. Algorithm (insert algorithm reference here) describes one step of the coverage control algorithm. 
-\subsection{Approach}
-For the purpose of this project, we consider $d = 3$, i.e. 3-D Euclidean space. Though orientation information about the robot may be present, so that $d \neq 3$, we only use the position information as our output is waypoints the agents should travel to.
+\section{Approach}
+\subsection{Dimensionality}
+For the purposes of this project, we only consider $d = 3$, i.e. 3-D Euclidean space, though the algorithm extends to an arbitrary number of dimensions. Orientation information may be available so that $d \neq 3$, we only use the position information to compute the waypoints that the agents should travel to. After all, our algorithm spits out only the waypoints that the agents should travel to. It is to our understanding that there exist a controller that will bring the robot to the waypoint.
+\subsection{Domain Model}
+Furthermore, it is assumed that the domain $\Xi$ is convex and \textit{extended} to a rectangular polygon. Since this extension is done, it is up to the user to determine whether or not the waypoint is inside the feasible set of the \textit{true} operating domain. For example, in the case where $d = 2$, and the operating domain is given by the vertices $(0,0), (1,0), (1, 1)$ then $\Xi$ is set to be the rectangle given by the vertices $(0, 0), (0, 1), (1, 1), (1, 0)$, and is used for all computations. However, the waypoint $(0,1)$ may not be an area that is accessible to the agents. Thankfully, for the purposes of this project we have been allowed to assume that the operating domain can be modeled as free water (i.e. a very large rectangular polygon) and thus our assumption is allowed. Regardless, this scenario would not happen, unless a RED agent goes outside the operating domain.  
+\subsection{RED Agent Model}
+A RED agent is modeled as a Gaussian distribution, $W \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$ so that the PDF of $W$ is given by 
+\begin{equation}
+	\displaystyle \varphi(w) = \frac{1}{\sqrt{(2\pi)^3 \abs{\boldsymbol{\Sigma}}}} \exp(-\frac{1}{2} (w - \boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(w - \boldsymbol{\mu})).
+\end{equation}
+This $\boldsymbol{\mu}$ and $\boldsymbol{\Sigma}$ are \textit{provided} to you by an algorithm called Event-Triggered Distributed Data Fusion (ET-DDF) which is developed by Luke Barbier from Colorado University in Boulder. For scenarios with multiple RED agents, the following model can be used:
+\begin{equation}
+	\displaystyle \varphi(w) = \sum\limits_{k=1}^{K}{\frac{\pi_k}{\sqrt{(2\pi)^3 \abs{\boldsymbol{\Sigma}_k}}} \exp(-\frac{1}{2} (w - \boldsymbol{\mu}_k)^T\boldsymbol{\Sigma}_k^{-1}(w - \boldsymbol{\mu}_k))}
+\end{equation}
+where $K$ is the number of RED agents present. Note that this is just a Gaussian mixture model, though there is no constraint on $\pi_k$ as $\varphi$ does not need to be a proper probability distribution. This $\varphi$ is the same exact $\varphi$ that is used in equation (\ref{eq:mass, center of mass}) \textit{but} we have restricted $\varphi$ to be in the class of probability densities. This makes sense, as $\varphi$ encodes the object we want to track, and we have modeled $\varphi$ as a Gaussian distribution to play well with ET-DDF. Note that due to numerical integration issues, we enforce that the variance $\boldsymbol{\Sigma}$ have a lower limit (i.e. a minimum lower threshold of covariance) since the computation of $M_i$ in equation (\ref{eq:mass, center of mass}) requires an integral over $\varphi$, so if $\varphi$ is too small due to $\mathcal{V}_i$ containing a very little contribution from $\varphi$ (i.e. when agent $i$ is very very far away from the RED agent) then we run into divide-by-zero issues and the centroid computation blows up. There is no secret to choosing this minimum threshold but it should depend on the size of $\Xi$. Alternatively, you can first find a scaling function $g : \Xi \to \Xi'$ which effectively scales down $\Xi$ to a smaller domain. Scaling is always injective, so the final waypoints can be returned for the non-scaled operating domain. This helps with reducing finite-time blow-up issues mentioned above. 
+
+\subsection{Dynamic Coverage Control}
+The original algorithm presented in \cite{Cortes:2004} does not cover the case where the $\varphi$ is dynamically changing. Since this is the case for the moving RED agent, the original algorithm was adapted according to \cite{Diaz-Mercado2017}. The authors in \cite{Diaz-Mercado2017} use derivative information about $\varphi$ to obtain better waypoints. Unfortunately, this information is not returned to us by ET-DDF, and thus we must turn to finite-differencing schemes to estimate them. The first order finite-differences scheme used is given by 
+\begin{equation}
+	\dot{\varphi} = \frac{p_{i} - p_{i-1}}{t_{i} - t_{i-1}}.
+\end{equation}
+Using this information, the updated mass, center of mass, and their derivatives are given by 
+\begin{equation}
+	\label{eq:centers with derivative information}
+	\displaystyle \dot{M}_i = \int_{\V_i}{\dot{\varphi}(\bxi, t) \: \dif \bxi}, \:\:\:\: \dot{C}_i = \frac{1}{M_i}\left( \int_{\V_i}{\bxi \cdot \varphi(\bxi, t) \: \dif \bxi} - M_iC_i\right)
+\end{equation}
+and the $M_i$ and $C_i$ are the same as given before, in equation (\ref{eq:mass, center of mass}). Note that this is still the Cort\'es' algorithm but modified to include derivative information.  The update law, using the derivative information is given by 
+\begin{equation}
+	\label{eq:cortes update law}
+	\displaystyle \dot{p}_i = \dot{C}_i - \left( \kappa + \frac{\dot{M}_i}{M_i} \right) (p_i - C_i).
+\end{equation}
+In the above, $\kappa > 0$ is some small gain. There is no easy way to choose this $\kappa$, but in the implementation it is chosen so that the overall control has unit $2$-norm. To compute the new waypoints, we can use this update law and perform a gradient descent algorithm, i.e. $p_{i+1} = p_i + \alpha \dot{p}_{i}$ where $\alpha$ is a parameter that can be tuned.
+
+\subsection{Solving the Optimization Problem}
+To solve the maximization problem, agents move towards the centroid of their Voronoi cell \cite{Cortes:2004}. Intuitively, the agents move towards the area they need to cover since the $\varphi$ acts as an attracting force that draws the center of mass towards the desired coverage area. Algorithm \ref{alg:coverage single step} describes one step of the coverage control algorithm. This single-step algorithm can then be run over and over again until tracking is completed and the agents can go back to observing the environment.
+
+To reduce the complexity of the code required to solve the problem, we consider a simple 3-D projection algorithm. Essentially, instead of using the C++ package \textbf{qhull} to compute the FULL 3-D Voronoi partition, we simply project the BLUE agent positions to the plane defined by the height of the RED agent, and save the projection information (to be used later in determining the waypoints). This creates a 2-D domain over which the 2-D geometric computations can be carried out. However, since we are working in 2-D the coverage control output will update the waypoints of the BLUE agents for the first two dimensions but not the third. But don't fear, the third dimension is recovered using the projection heights, which brings the BLUE agents closer to the RED agents. 
+
+\begin{algorithm}[H]
+	\caption{Coverage Control Single Step}
+	\label{alg:coverage single step}
+	\hspace*{\algorithmicindent}\textbf{Input}: Agent positions $p \in \R^3$, coverage function $\varphi$, operating domain $\Xi$, RED agent $\boldsymbol{\mu}$ and $\boldsymbol{\Sigma}$ \\
+	\hspace*{\algorithmicindent}\textbf{Output}: New agent waypoints $p^* \in \R^3$.
+	\begin{algorithmic}
+		\STATE Set $p^*  = p$.
+		\STATE Project all points to the plane defined by the height of the RED agent. 
+		\STATE Compute projection distances.
+		\STATE Compute the 2-D Voronoi partition $\V(\Xi, p) = (\V_1, \V_2, \dots, \V_N)$ of the projection.
+		\FOR {each cell $\V_i$, $i=1$ \TO $N$}
+			\STATE Compute the mass and center of mass, and their derivatives according to equation (\ref{eq:centers with derivative information}).
+			\STATE Using the control law (\ref{eq:cortes update law}) and the projection distances, compute the new waypoints using gradient descent.
+			\STATE Set $p^*_i$ to the result of the above.
+		\ENDFOR
+		\STATE Return $p^*$, the new agent waypoints.
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Python Implementation Details}
+\subsection{Structure of Code}
+Most of the code that you will use for this project is contained in a helper file called \textbf{pyvoro3d.py} which is contained under \textbf{vorutils}, which is short for Voronoi utilities. The entire package contains utility functions that you can use to create simulations of the coverage control algorithms. Examples of simulations are contained in the \textbf{simutils}, short for simulation utilities. In those examples, you can see how to create a simulation using the helper files. What is left to be done, is to turn this entire algorithm into a ROS node that can be used by the robots. 
+
+There is another package in there containing the helper file \textbf{pyvoro.py}. This is the old 2-D tracking code and is mostly reserved for use by Dimitris Boskos, post-doc with Sonia and Jorge. You are free to look and use it, since the essence of the code is also ported into \textbf{pyvoro3d.py} but be careful with the usage of those functions. 
+\subsection{Geometric Operations}
+The Python modules/sub-modules \textbf{shapely} and \textbf{scipy.spatial} are used to handle geometric operations. Since much of the computational overhead was reduced in moving from full 3-D to a simplified version \textbf{shapely}, which is more suitable for 2-D geometric computations, is used in favor of \textbf{scipy.spatial}. However \textbf{scipy.spatial} contains the code that computes the infinite Voronoi partitions, so we still use it.
+\subsection{Computing the Integral}
+Numerical integration is not easy, especially when we are dealing with non-uniform domains. Currently, the integration strategy is to use \textbf{scipy.integrate} which uses quadrature rules to compute the integrals. Unfortunately, this means that the limits of the integration, according to their documentation, must be rectangular. Thus, any convex Voronoi cell that is spit into their integration scheme automatically gets turned into the smallest bounding box of the Voronoi cell. So your integration scheme will be incredibly inaccurate if you are unlucky, but this inaccuracy does help prevent the integrals from blowing up.
+
+The scheme proposed initially was to create a Delaunay triangulation (or just regular triangulation) of the domain and compute the integrals over the triangles, which can be done using many schemes that abuse Barycentric coordinates. Then, their values are summed to obtain the integral over the entire Voronoi cell. However, when this was implemented, many of these integral computations suffered from finite-time blow up in the integral, since the agents were so far away from the RED agent, the contribution from $\varphi$ was essentially zero. This is definitely an area for work to be done, and you should look into \textbf{quadpy}, which handles these quadrature computations and \textbf{scipy.spatial} for the triangulation. 
+
+
+% TODO: \usepackage{graphicx} required
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../2019d_Coverage-python/old/notes/voronoi_partition}
+	\caption{An example of a Voronoi partition. The Agents are represented as dots.}
+	\label{fig:voronoipartition}
+\end{figure}
+% TODO: \usepackage{graphicx} required
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../../../2019d_Coverage-python/old/notes/sim1_final}
+	\caption{A brief snapshot of the coverage control algorithm. The Agents (dots) cover the region defined by the dark blue area. The red dots represent their starting location.}
+	\label{fig:sim1final}
+\end{figure}
+
+\nocite{*}
+\bibliography{references}
+\bibliographystyle{ieeetr}
 \end{document}
